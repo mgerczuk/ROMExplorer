@@ -683,7 +683,9 @@ namespace DiscUtils.Vfs
 
                 if (entry.IsSymlink)
                 {
-                    entry = ResolveSymlink(entry, path + "\\" + entry.FileName);
+                    var resolveSymlink = ResolveSymlink(entry, path + "\\" + entry.FileName);
+                    if (resolveSymlink != null)
+                        entry = resolveSymlink;
                 }
 
                 bool isDir = entry.IsDirectory;
@@ -725,7 +727,8 @@ namespace DiscUtils.Vfs
                 currentEntry = GetDirectoryEntry(currentPath);
                 if (currentEntry == null)
                 {
-                    throw new FileNotFoundException("Unable to resolve symlink", path);
+                    //throw new FileNotFoundException("Unable to resolve symlink", path);
+                    return null;
                 }
 
                 --resolvesLeft;

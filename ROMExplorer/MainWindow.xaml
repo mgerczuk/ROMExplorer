@@ -1,0 +1,93 @@
+﻿<Window x:Class="ROMExplorer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ROMExplorer"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+        mc:Ignorable="d"
+        Title="Android ROM Explorer" Height="600" Width="800" Closed="Window_Closed">
+    
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:ArchiveEntryViewModelBase}">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+        
+        <HierarchicalDataTemplate DataType="{x:Type local:DiscDirectoryInfoTreeItemViewModel}" ItemsSource="{Binding Directories}">
+            <StackPanel Orientation="Horizontal" Margin="2,5">
+                <Image Source="Images/Folder_16x.png" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        
+        <DataTemplate DataType="{x:Type local:MainViewModel}">
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" Margin="5" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Image File: " VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SourceName}" Margin="0,2"/>
+                    <Button Grid.Row="0" Grid.Column="2" Command="{Binding SelectFile}" Margin="0,2"
+                            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Image Source="Images/Folder_16x.png" Stretch="None"/>
+                    </Button>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Archive Entry: " VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                              ItemsSource="{Binding FileInfo.ArchiveEntries}" SelectedItem="{Binding SelectedArchiveEntry}" Margin="0,2"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TreeView Grid.Row="0">
+                        <i:Interaction.Behaviors>
+                            <local:SelectedItemBehavior SelectedItem="{Binding Selected, Mode=TwoWay}"/>
+                            <local:TreeRootBehavior Root="{Binding FileInfo.Root}"></local:TreeRootBehavior>
+                        </i:Interaction.Behaviors>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+                                <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+                    
+                    <DataGrid Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Entries}" GridLinesVisibility="None" RowHeaderWidth="0" AutoGenerateColumns="False" 
+                              dd:DragDrop.IsDragSource="True" dd:DragDrop.DragHandler="{Binding}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Name">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2">
+                                            <Image Source="{Binding Converter={local:FileImageConverter}}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Size">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Size}" HorizontalAlignment="Right" Margin="2"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <ContentControl Content="{Binding}"/>
+</Window>
