@@ -9,79 +9,67 @@
 // 
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed to in writing, software 
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+// 
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using DiscUtils.Ext;
+using HuaweiUpdateLibrary.Core;
 using ROMExplorer.Annotations;
-using ROMExplorer.SImg;
+using ROMExplorer.Img;
 
-namespace ROMExplorer.Img
+namespace ROMExplorer.Huawei
 {
-    internal class ImgFileInfo : IFileInfo
+    internal class UpdateAppFileInfo : IFileInfo
     {
-        private readonly Stream stream;
+        private readonly IList<UpdateEntryViewModel> archiveEntries;
+        private DiscDirectoryInfoTreeItemViewModel root;
 
-        public ImgFileInfo(string filename)
+        public UpdateAppFileInfo(string filename)
         {
-            stream = new FileStream(filename, FileMode.Open);
+            var updateFile = UpdateFile.Open(filename);
 
-            Root = OpenImgStream(stream);
+            archiveEntries = updateFile.Select(e => new UpdateEntryViewModel(this, filename, e))
+                .ToList();
         }
 
         #region Implementation of IDisposable
 
         public void Dispose()
         {
-            stream.Dispose();
+            foreach (var entry in archiveEntries)
+                entry.Dispose();
+
+            archiveEntries.Clear();
         }
 
         #endregion
 
-        public static DiscDirectoryInfoTreeItemViewModel OpenImgStream(Stream stream)
+        public void OpenStream(Stream stream)
         {
-            if (SparseStream.Detect(stream))
-            {
-                var sparseStream = new SparseStream(stream);
-                if (!sparseStream.Open())
-                    throw new Exception("Wrong format");
-                stream = sparseStream;
-            }
-
-            var fileSystem = new ExtFileSystem(stream);
-
-            return new DiscDirectoryInfoTreeItemViewModel(fileSystem.Root);
+            Root = ImgFileInfo.OpenImgStream(stream);
         }
 
         public class Factory : IFileInfoFactory
         {
             #region Implementation of IFileInfoFactory
 
-            public string Filter { get; } = "Image Files (*.img,*.ext4)|*.img;*.ext4";
+            public string Filter { get; } = "Huawei UPDATE.APP File|*.app";
 
             public IFileInfo Create(string filename)
             {
-                return new ImgFileInfo(filename);
+                return new UpdateAppFileInfo(filename);
             }
 
             #endregion
         }
-
-        #region Overrides of FileInfoBase
-
-        public IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries { get; } = null;
-
-        public DiscDirectoryInfoTreeItemViewModel Root { get; }
-
-        #endregion
 
         #region Implementation of INotifyPropertyChanged
 
@@ -91,6 +79,23 @@ namespace ROMExplorer.Img
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region Implementation of IFileInfo
+
+        public IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries => archiveEntries;
+
+        public DiscDirectoryInfoTreeItemViewModel Root
+        {
+            get => root;
+            set
+            {
+                if (Equals(value, root)) return;
+                root = value;
+                OnPropertyChanged();
+            }
         }
 
         #endregion

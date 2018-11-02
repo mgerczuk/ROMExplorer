@@ -17,6 +17,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
@@ -41,6 +42,9 @@ namespace ROMExplorer
             var viewModel = value as DirectoryEntryViewModel;
             if (viewModel?.DiskInfo != null)
                 return new BitmapImage(new Uri("Images/Folder_16x.png", UriKind.Relative));
+
+            if (viewModel?.FileInfo?.Attributes == FileAttributes.ReparsePoint)
+                return new BitmapImage(new Uri("Images/LinkFile_16x.png", UriKind.Relative));
             return new BitmapImage(new Uri("Images/Document_16x.png", UriKind.Relative));
         }
 

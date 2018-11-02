@@ -20,8 +20,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using K4os.Compression.LZ4.Streams;
+using ROMExplorer.Annotations;
 using ROMExplorer.Img;
-using ROMExplorer.Properties;
 using ROMExplorer.Utils;
 
 namespace ROMExplorer.Lz4

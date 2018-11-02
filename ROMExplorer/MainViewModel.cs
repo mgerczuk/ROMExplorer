@@ -28,9 +28,10 @@ using Delay;
 using DiscUtils;
 using GongSolutions.Wpf.DragDrop;
 using Microsoft.Win32;
+using ROMExplorer.Annotations;
+using ROMExplorer.Huawei;
 using ROMExplorer.Img;
 using ROMExplorer.Lz4;
-using ROMExplorer.Properties;
 using ROMExplorer.Tar;
 using ROMExplorer.Utils;
 
@@ -42,7 +43,8 @@ namespace ROMExplorer
         {
             new ImgFileInfo.Factory(),
             new TarFileInfo.Factory(),
-            new Lz4FileInfo.Factory()
+            new Lz4FileInfo.Factory(),
+            new UpdateAppFileInfo.Factory(), 
         };
 
         private List<DirectoryEntryViewModel> entries;

@@ -20,8 +20,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using ROMExplorer.Annotations;
 using ROMExplorer.Img;
-using ROMExplorer.Properties;
 using SharpCompress.Archives.Tar;
 
 namespace ROMExplorer.Tar

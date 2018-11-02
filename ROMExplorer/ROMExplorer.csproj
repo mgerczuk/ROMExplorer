@@ -83,8 +83,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Huawei\UpdateAppFileInfo.cs" />
+    <Compile Include="Huawei\UpdateEntryViewModel.cs" />
     <Compile Include="IFileInfoFactory.cs" />
     <Compile Include="Lz4\Lz4FileInfo.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\VirtualFileDataObject.cs" />
     <Compile Include="TreeRootBehavior.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
@@ -114,7 +117,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,6 +148,10 @@
     <Resource Include="Images\Folder_16x.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HuaweiUpdateLibrary\HuaweiUpdateLibrary.csproj">
+      <Project>{a34aa259-4277-41c9-8e21-700972de46a6}</Project>
+      <Name>HuaweiUpdateLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\DiscUtils.Core\DiscUtils.Core.csproj">
       <Project>{068621ed-3ebb-42e8-b8e9-a14c743572c1}</Project>
       <Name>DiscUtils.Core</Name>
@@ -159,6 +165,8 @@
       <Name>DiscUtils.Streams</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\LinkFile_16x.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
