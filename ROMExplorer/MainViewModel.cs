@@ -9,7 +9,7 @@
 // 
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed to in writing, software 
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
@@ -44,7 +44,7 @@ namespace ROMExplorer
             new ImgFileInfo.Factory(),
             new TarFileInfo.Factory(),
             new Lz4FileInfo.Factory(),
-            new UpdateAppFileInfo.Factory(), 
+            new UpdateAppFileInfo.Factory()
         };
 
         private List<DirectoryEntryViewModel> entries;
@@ -131,6 +131,9 @@ namespace ROMExplorer
 
         public IEnumerable<DirectoryEntryViewModel> Entries => entries;
 
+        public ICommand DoubleClick => new RelayCommand(o =>
+            SelectEntry(o as DirectoryEntryViewModel));
+
         #region Implementation of IDisposable
 
         public void Dispose()
@@ -139,6 +142,32 @@ namespace ROMExplorer
         }
 
         #endregion
+
+        private void SelectEntry(DirectoryEntryViewModel entry)
+        {
+            if (entry?.DiskInfo == null)
+                return;
+
+            var path = PathToRoot(entry.DiskInfo).Reverse().Skip(1);
+
+            var info = FileInfo.Root;
+            foreach (var p in path)
+            {
+                info.IsExpanded = true;
+                info = info.Directories.First(d => d.Name == p.Name);
+            }
+            info.IsExpanded = true;
+            info.IsSelected = true;
+        }
+
+        private static IEnumerable<DiscDirectoryInfo> PathToRoot(DiscDirectoryInfo info)
+        {
+            while (info != null)
+            {
+                yield return info;
+                info = info.Parent;
+            }
+        }
 
         private void SetSelected(DiscDirectoryInfo directoryInfo)
         {

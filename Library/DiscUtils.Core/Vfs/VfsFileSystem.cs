@@ -683,9 +683,9 @@ namespace DiscUtils.Vfs
 
                 if (entry.IsSymlink)
                 {
-                    var resolveSymlink = ResolveSymlink(entry, path + "\\" + entry.FileName);
-                    if (resolveSymlink != null)
-                        entry = resolveSymlink;
+                    //var resolveSymlink = ResolveSymlink(entry, path + "\\" + entry.FileName);
+                    //if (resolveSymlink != null)
+                    //    entry = resolveSymlink;
                 }
 
                 bool isDir = entry.IsDirectory;

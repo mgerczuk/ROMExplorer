@@ -16,15 +16,20 @@
 //  limitations under the License.
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DiscUtils;
+using ROMExplorer.Annotations;
 
 namespace ROMExplorer
 {
     // View model for folder on the tree view on the left
-    public class DiscDirectoryInfoTreeItemViewModel
+    public class DiscDirectoryInfoTreeItemViewModel : INotifyPropertyChanged
     {
         private readonly IList<DiscDirectoryInfoTreeItemViewModel> directories;
+        private bool isExpanded;
+        private bool isSelected;
 
         public DiscDirectoryInfoTreeItemViewModel(DiscDirectoryInfo model)
         {
@@ -38,8 +43,38 @@ namespace ROMExplorer
 
         public string Name => Model.Name;
 
-        public bool IsExpanded { get; set; }
+        public bool IsExpanded
+        {
+            get { return isExpanded; }
+            set
+            {
+                if (value == isExpanded) return;
+                isExpanded = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public bool IsSelected { get; set; }
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                if (value == isSelected) return;
+                isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 }

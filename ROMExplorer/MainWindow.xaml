@@ -10,6 +10,7 @@
         Title="Android ROM Explorer" Height="600" Width="800" Closed="Window_Closed">
     
     <Window.Resources>
+        
         <DataTemplate DataType="{x:Type local:ArchiveEntryViewModelBase}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
@@ -20,7 +21,7 @@
                 <TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
         </HierarchicalDataTemplate>
-        
+
         <DataTemplate DataType="{x:Type local:MainViewModel}">
             <DockPanel>
                 <Grid DockPanel.Dock="Top" Margin="5" HorizontalAlignment="Stretch">
@@ -55,35 +56,45 @@
                             <local:TreeRootBehavior Root="{Binding FileInfo.Root}"></local:TreeRootBehavior>
                         </i:Interaction.Behaviors>
                         <TreeView.ItemContainerStyle>
-                            <Style TargetType="TreeViewItem">
+                            <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                                 <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
                                 <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                             </Style>
                         </TreeView.ItemContainerStyle>
                     </TreeView>
-                    
-                    <DataGrid Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Entries}" GridLinesVisibility="None" RowHeaderWidth="0" AutoGenerateColumns="False" 
+
+                    <ListView x:Name="FilesList"  Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Entries}"
                               dd:DragDrop.IsDragSource="True" dd:DragDrop.DragHandler="{Binding}">
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Name">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Image Source="{Binding Converter={local:FileImageConverter}}" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Size">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Size}" HorizontalAlignment="Right" Margin="2"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name"
+                                                Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="2">
+                                                <Image Source="{Binding Converter={local:FileImageConverter}}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Size"
+                                                Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Right" Margin="2" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="local:DoubleClickBehavior.Command" Value="{Binding ElementName=FilesList, Path=DataContext.DoubleClick}"/>
+                                </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
                 </Grid>
             </DockPanel>
         </DataTemplate>

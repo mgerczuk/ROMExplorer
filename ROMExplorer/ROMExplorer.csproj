@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="Huawei\UpdateAppFileInfo.cs" />
     <Compile Include="Huawei\UpdateEntryViewModel.cs" />
     <Compile Include="IFileInfoFactory.cs" />
