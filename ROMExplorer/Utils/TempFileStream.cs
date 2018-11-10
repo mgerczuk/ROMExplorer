@@ -37,6 +37,11 @@ namespace ROMExplorer.Utils
             return destStream;
         }
 
+        public static Stream Create()
+        {
+            return new TempFileStream(GetTempFileName(), FileMode.Create, FileAccess.ReadWrite);
+        }
+
         #region Overrides of FileStream
 
         protected override void Dispose(bool disposing)

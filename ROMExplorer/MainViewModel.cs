@@ -34,6 +34,7 @@ using ROMExplorer.Img;
 using ROMExplorer.Lz4;
 using ROMExplorer.Tar;
 using ROMExplorer.Utils;
+using ROMExplorer.Zip;
 
 namespace ROMExplorer
 {
@@ -42,6 +43,7 @@ namespace ROMExplorer
         private static readonly IFileInfoFactory[] factories =
         {
             new ImgFileInfo.Factory(),
+            new ZipFileInfo.Factory(), 
             new TarFileInfo.Factory(),
             new Lz4FileInfo.Factory(),
             new UpdateAppFileInfo.Factory()
