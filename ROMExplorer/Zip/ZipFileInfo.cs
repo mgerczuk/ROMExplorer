@@ -16,22 +16,18 @@
 //  limitations under the License.
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using ROMExplorer.Annotations;
 using ROMExplorer.BlockImg;
 using ROMExplorer.Img;
 using SharpCompress.Archives.Zip;
 
 namespace ROMExplorer.Zip
 {
-    internal class ZipFileInfo : IFileInfo
+    internal class ZipFileInfo : FileInfoBase
     {
-        private readonly List<ZipEntryViewModel> archiveEntries = new List<ZipEntryViewModel>();
+        private readonly List<ArchiveEntryViewModelBase> archiveEntries = new List<ArchiveEntryViewModelBase>();
         private readonly FileStream fileStream;
-        private DiscDirectoryInfoTreeItemViewModel root;
         private readonly ZipArchive zip;
 
         public ZipFileInfo(string filename)
@@ -39,12 +35,21 @@ namespace ROMExplorer.Zip
             fileStream = new FileStream(filename, FileMode.Open);
             zip = ZipArchive.Open(fileStream);
 
-            archiveEntries.AddRange(zip.Entries.Select(e => new ZipEntryViewModel(this, e)));
+            var root0 = new DirectoryArchiveEntryViewModel();
+            root0.InitDirectories(zip.Entries.Select(e => e.Key));
+            root0.AddEntries(zip.Entries.Select(e => new ZipEntryViewModel(this, e)));
+            archiveEntries.AddRange(root0.Children);
         }
+
+        #region Implementation of FileInfoBase
+
+        public override IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries => archiveEntries;
+
+        #endregion
 
         #region Implementation of IDisposable
 
-        public void Dispose()
+        public override void Dispose()
         {
             foreach (var entry in archiveEntries)
                 entry.Dispose();
@@ -68,7 +73,9 @@ namespace ROMExplorer.Zip
                 return null;
 
             using (var entryStream = transferListEntry.OpenEntryStream())
+            {
                 return new TransferList(entryStream);
+            }
         }
 
         public class Factory : IFileInfoFactory
@@ -77,41 +84,12 @@ namespace ROMExplorer.Zip
 
             public string Filter { get; } = "Zip Files (*.zip)|*.zip";
 
-            public IFileInfo Create(string filename)
+            public FileInfoBase Create(string filename)
             {
                 return new ZipFileInfo(filename);
             }
 
             #endregion
         }
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Implementation of IFileInfo
-
-        public IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries => archiveEntries;
-
-        public DiscDirectoryInfoTreeItemViewModel Root
-        {
-            get => root;
-            private set
-            {
-                if (Equals(value, root)) return;
-                root = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
     }
 }

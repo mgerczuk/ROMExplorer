@@ -6,15 +6,19 @@
         xmlns:local="clr-namespace:ROMExplorer"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:dd="urn:gong-wpf-dragdrop"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         mc:Ignorable="d"
         Title="Android ROM Explorer" Height="600" Width="800" Closed="Window_Closed">
-    
+
     <Window.Resources>
-        
-        <DataTemplate DataType="{x:Type local:ArchiveEntryViewModelBase}">
-            <TextBlock Text="{Binding Name}"/>
-        </DataTemplate>
-        
+
+        <HierarchicalDataTemplate DataType="{x:Type local:ArchiveEntryViewModelBase}" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal" Margin="2,5">
+                <Image Source="{Binding Converter={local:ArchiveFileImageConverter}}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}"  Margin="3,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+
         <HierarchicalDataTemplate DataType="{x:Type local:DiscDirectoryInfoTreeItemViewModel}" ItemsSource="{Binding Directories}">
             <StackPanel Orientation="Horizontal" Margin="2,5">
                 <Image Source="Images/Folder_16x.png" VerticalAlignment="Center"/>
@@ -35,14 +39,43 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Image File: " VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SourceName}" Margin="0,2"/>
-                    <Button Grid.Row="0" Grid.Column="2" Command="{Binding SelectFile}" Margin="0,2"
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SourceName}" VerticalAlignment="Center" Margin="3,0"/>
+                    <Button Grid.Row="0" Grid.Column="2" Command="{Binding SelectFile}"
                             Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                         <Image Source="Images/Folder_16x.png" Stretch="None"/>
                     </Button>
+                    <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="DarkGray" Height="26" Margin="0,2"></Border>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Archive Entry: " VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
-                              ItemsSource="{Binding FileInfo.ArchiveEntries}" SelectedItem="{Binding SelectedArchiveEntry}" Margin="0,2"/>
+                    <Grid x:Name="templateRoot" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Popup IsOpen="{Binding FileInfo.IsPopupOpen, Mode=TwoWay}" StaysOpen="False" Placement="Bottom"
+                               Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                            <Themes:SystemDropShadowChrome Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                                <TreeView ItemsSource="{Binding FileInfo.ArchiveEntries}">
+                                    <i:Interaction.Behaviors>
+                                        <local:SelectedItemBehavior SelectedItem="{Binding FileInfo.SelectedArchiveEntry, Mode=TwoWay}"/>
+                                    </i:Interaction.Behaviors>
+                                    <TreeView.ItemContainerStyle>
+                                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                            <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+                                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                                        </Style>
+                                    </TreeView.ItemContainerStyle>
+                                </TreeView>
+                            </Themes:SystemDropShadowChrome>
+                        </Popup>
+                    </Grid>
+                    <ToggleButton x:Name="toggleButton" Grid.Row="1" Grid.Column="2"
+                                  Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}"
+                                  IsChecked="{Binding FileInfo.IsPopupOpen}" Margin="0,2" HorizontalAlignment="Stretch">
+                        <Border Width="16" Height="16">
+                            <Path x:Name="arrow"
+                                  Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z"
+                                  Fill="{DynamicResource ComboBox.Static.Glyph}" HorizontalAlignment="Center"
+                                  Margin="0" VerticalAlignment="Center" />
+                        </Border>
+                    </ToggleButton>
+                    <ContentPresenter Grid.Row="1" Grid.Column="1" Content="{Binding FileInfo.SelectedArchiveEntry}" IsHitTestVisible="false" Margin="3,0"/>
+                    <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="DarkGray"  Height="26" Margin="0,2"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -92,7 +125,7 @@
                             <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="local:DoubleClickBehavior.Command" Value="{Binding ElementName=FilesList, Path=DataContext.DoubleClick}"/>
-                                </Style>
+                            </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
                 </Grid>

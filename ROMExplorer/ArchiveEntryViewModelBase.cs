@@ -15,13 +15,26 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using System;
+using System.Collections.Generic;
+
 namespace ROMExplorer
 {
     // Base view model class for items in "Archive Entries" combo box
-    public abstract class ArchiveEntryViewModelBase
+    public abstract class ArchiveEntryViewModelBase : IDisposable
     {
         public string Name { get; set; }
 
+        public IList<ArchiveEntryViewModelBase> Children { get; } = new List<ArchiveEntryViewModelBase>();
+
         public abstract void Select();
+
+        public abstract bool IsImage { get; }
+
+        #region Implementation of IDisposable
+
+        public abstract void Dispose();
+
+        #endregion
     }
 }

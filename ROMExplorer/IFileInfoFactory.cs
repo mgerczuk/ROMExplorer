@@ -20,6 +20,6 @@ namespace ROMExplorer
     public interface IFileInfoFactory
     {
         string Filter { get; }
-        IFileInfo Create(string filename);
+        FileInfoBase Create(string filename);
     }
 }

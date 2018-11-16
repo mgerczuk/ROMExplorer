@@ -50,9 +50,8 @@ namespace ROMExplorer
         };
 
         private List<DirectoryEntryViewModel> entries;
-        private IFileInfo fileInfo;
+        private FileInfoBase fileInfo;
         private DiscDirectoryInfoTreeItemViewModel selected;
-        private ArchiveEntryViewModelBase selectedArchiveEntry;
         private string sourceName;
 
         public string SourceName
@@ -87,7 +86,7 @@ namespace ROMExplorer
                 }
         });
 
-        public IFileInfo FileInfo
+        public FileInfoBase FileInfo
         {
             get => fileInfo;
             private set
@@ -96,28 +95,10 @@ namespace ROMExplorer
                     return;
 
                 fileInfo?.Dispose();
+                fileInfo = null;
+                OnPropertyChanged();
                 fileInfo = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public ArchiveEntryViewModelBase SelectedArchiveEntry
-        {
-            get => selectedArchiveEntry;
-            set
-            {
-                if (Equals(value, selectedArchiveEntry))
-                    return;
-                selectedArchiveEntry = value;
-                OnPropertyChanged();
-                try
-                {
-                    value?.Select();
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
             }
         }
 
@@ -134,7 +115,10 @@ namespace ROMExplorer
         public IEnumerable<DirectoryEntryViewModel> Entries => entries;
 
         public ICommand DoubleClick => new RelayCommand(o =>
-            SelectEntry(o as DirectoryEntryViewModel));
+        {
+            using (new WaitCursor())
+                SelectEntry(o as DirectoryEntryViewModel);
+        });
 
         #region Implementation of IDisposable
 

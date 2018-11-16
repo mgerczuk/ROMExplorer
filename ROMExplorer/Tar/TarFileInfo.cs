@@ -9,46 +9,54 @@
 // 
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed to in writing, software 
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using ROMExplorer.Annotations;
 using ROMExplorer.Img;
 using SharpCompress.Archives.Tar;
 
 namespace ROMExplorer.Tar
 {
-    internal class TarFileInfo : IFileInfo
+    internal class TarFileInfo : FileInfoBase
     {
-        private readonly List<TarEntryViewModel> archiveEntries = new List<TarEntryViewModel>();
-        private DiscDirectoryInfoTreeItemViewModel root;
+        private readonly List<ArchiveEntryViewModelBase> archiveEntries = new List<ArchiveEntryViewModelBase>();
+        private readonly FileStream fileStream;
+        private readonly TarArchive tar;
 
         public TarFileInfo(string filename)
         {
             // TODO: check fileStream cleanup
-            var fileStream = new FileStream(filename, FileMode.Open);
-            using (var x = TarArchive.Open(fileStream))
-            {
-                archiveEntries.AddRange(x.Entries.Select(e => new TarEntryViewModel(this, e)));
-            }
+            fileStream = new FileStream(filename, FileMode.Open);
+            tar = TarArchive.Open(fileStream);
+
+            var root0 = new DirectoryArchiveEntryViewModel();
+            root0.InitDirectories(tar.Entries.Select(e => e.Key));
+            root0.AddEntries(tar.Entries.Select(e => new TarEntryViewModel(this, e)));
+            archiveEntries.AddRange(root0.Children);
         }
+
+        #region Implementation of FileInfoBase
+
+        public override IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries => archiveEntries;
+
+        #endregion
 
         #region Implementation of IDisposable
 
-        public void Dispose()
+        public override void Dispose()
         {
             foreach (var entry in archiveEntries)
                 entry.Dispose();
 
             archiveEntries.Clear();
+            tar.Dispose();
+            fileStream.Dispose();
         }
 
         #endregion
@@ -64,43 +72,12 @@ namespace ROMExplorer.Tar
 
             public string Filter { get; } = "Samsung (*.md5)|*.md5";
 
-            public IFileInfo Create(string filename)
+            public FileInfoBase Create(string filename)
             {
                 return new TarFileInfo(filename);
             }
 
             #endregion
         }
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Implementation of IFileInfo
-
-        public IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries => archiveEntries;
-
-        public DiscDirectoryInfoTreeItemViewModel Root
-        {
-            get { return root; }
-            private set
-            {
-                if (Equals(root, value))
-                    return;
-
-                root = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
     }
 }

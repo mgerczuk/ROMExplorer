@@ -305,6 +305,10 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <!-- ComboBox -->
+
+        <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="#FF606060"/>
 
     </Application.Resources>
 </Application>

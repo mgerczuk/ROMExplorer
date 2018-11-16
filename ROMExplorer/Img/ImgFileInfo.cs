@@ -9,7 +9,7 @@
 // 
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed to in writing, software 
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
@@ -17,16 +17,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using DiscUtils.Ext;
-using ROMExplorer.Annotations;
 using ROMExplorer.SImg;
 
 namespace ROMExplorer.Img
 {
-    internal class ImgFileInfo : IFileInfo
+    internal class ImgFileInfo : FileInfoBase
     {
         private readonly Stream stream;
 
@@ -37,9 +34,15 @@ namespace ROMExplorer.Img
             Root = OpenImgStream(stream);
         }
 
+        #region Overrides of FileInfoBase
+
+        public override IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries { get; } = null;
+
+        #endregion
+
         #region Implementation of IDisposable
 
-        public void Dispose()
+        public override void Dispose()
         {
             stream.Dispose();
         }
@@ -67,32 +70,12 @@ namespace ROMExplorer.Img
 
             public string Filter { get; } = "Image Files (*.img,*.ext4)|*.img;*.ext4";
 
-            public IFileInfo Create(string filename)
+            public FileInfoBase Create(string filename)
             {
                 return new ImgFileInfo(filename);
             }
 
             #endregion
         }
-
-        #region Overrides of FileInfoBase
-
-        public IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries { get; } = null;
-
-        public DiscDirectoryInfoTreeItemViewModel Root { get; }
-
-        #endregion
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

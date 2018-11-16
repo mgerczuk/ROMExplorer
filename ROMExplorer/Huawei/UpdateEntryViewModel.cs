@@ -14,7 +14,6 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-// 
 
 using System;
 using System.IO;
@@ -36,7 +35,7 @@ namespace ROMExplorer.Huawei
 
         #region Implementation of IDisposable
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (getStream.IsValueCreated)
                 getStream.Value.Dispose();
@@ -52,6 +51,9 @@ namespace ROMExplorer.Huawei
             stream.Position = 0;
             parent.OpenStream(stream);
         }
+
+        public override bool IsImage => Name == "SYSTEM" || Name == "PRODUCT" || Name == "VENDOR" || Name == "CACHE" ||
+                                        Name == "ODM";
 
         #endregion
     }

@@ -53,7 +53,7 @@ namespace ROMExplorer.Zip
 
         #region Implementation of IDisposable
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (getStream.IsValueCreated)
                 getStream.Value.Dispose();
@@ -69,6 +69,9 @@ namespace ROMExplorer.Zip
             stream.Position = 0;
             parent.OpenImgStream(stream);
         }
+
+        public override bool IsImage =>
+            Name.EndsWith(".img") || Name.EndsWith(".new.dat") || Name.EndsWith(".new.dat.br");
 
         #endregion
     }
