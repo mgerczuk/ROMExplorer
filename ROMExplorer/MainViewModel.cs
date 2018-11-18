@@ -29,9 +29,11 @@ using DiscUtils;
 using GongSolutions.Wpf.DragDrop;
 using Microsoft.Win32;
 using ROMExplorer.Annotations;
+using ROMExplorer.Ftf;
 using ROMExplorer.Huawei;
 using ROMExplorer.Img;
 using ROMExplorer.Lz4;
+using ROMExplorer.Sin;
 using ROMExplorer.Tar;
 using ROMExplorer.Utils;
 using ROMExplorer.Zip;
@@ -42,11 +44,13 @@ namespace ROMExplorer
     {
         private static readonly IFileInfoFactory[] factories =
         {
-            new ImgFileInfo.Factory(),
             new ZipFileInfo.Factory(), 
             new TarFileInfo.Factory(),
+            new FtfFileInfo.Factory(),
+            new UpdateAppFileInfo.Factory(),
+            new ImgFileInfo.Factory(),
             new Lz4FileInfo.Factory(),
-            new UpdateAppFileInfo.Factory()
+            new SinFileInfo.Factory(),
         };
 
         private List<DirectoryEntryViewModel> entries;

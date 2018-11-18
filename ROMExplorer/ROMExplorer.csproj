@@ -98,11 +98,16 @@
     <Compile Include="BlockImg\TransferList.cs" />
     <Compile Include="DirectoryArchiveEntryViewModel.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
+    <Compile Include="Ftf\FtfEntryViewModel.cs" />
+    <Compile Include="Ftf\FtfFileInfo.cs" />
     <Compile Include="Huawei\UpdateAppFileInfo.cs" />
     <Compile Include="Huawei\UpdateEntryViewModel.cs" />
     <Compile Include="IFileInfoFactory.cs" />
     <Compile Include="Lz4\Lz4FileInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Sin\SinFileInfo.cs" />
+    <Compile Include="Sin\SinParserV3.cs" />
+    <Compile Include="Utils\BinaryReaderExtension.cs" />
     <Compile Include="Utils\VirtualFileDataObject.cs" />
     <Compile Include="TreeRootBehavior.cs" />
     <Compile Include="Utils\RelayCommand.cs" />

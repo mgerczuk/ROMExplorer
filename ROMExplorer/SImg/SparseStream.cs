@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using ROMExplorer.Utils;
 
 namespace ROMExplorer.SImg
 {
@@ -38,7 +39,7 @@ namespace ROMExplorer.SImg
         public static bool Detect(Stream stream)
         {
             var binaryReader = new BinaryReader(stream);
-            var sparseHeader = ByteToType<sparse_header>(binaryReader);
+            var sparseHeader = binaryReader.ReadStruct<sparse_header>();
             return sparseHeader.magic == SPARSE_HEADER_MAGIC;
         }
 
@@ -46,7 +47,7 @@ namespace ROMExplorer.SImg
         {
             stream.Position = 0;
             var binaryReader = new BinaryReader(stream);
-            sparseHeader = ByteToType<sparse_header>(binaryReader);
+            sparseHeader = binaryReader.ReadStruct<sparse_header>();
             length = sparseHeader.total_blks * sparseHeader.blk_sz;
             if (sparseHeader.magic != SPARSE_HEADER_MAGIC)
                 return false;
@@ -55,7 +56,7 @@ namespace ROMExplorer.SImg
 
             for (var i = 0; i < sparseHeader.total_chunks; i++)
             {
-                var chunkHeader = ByteToType<chunk_header>(binaryReader);
+                var chunkHeader = binaryReader.ReadStruct<chunk_header>();
                 stream.Position += sparseHeader.chunk_hdr_sz - CHUNK_HEADER_LEN;
 
                 switch (chunkHeader.chunk_type)
@@ -88,17 +89,6 @@ namespace ROMExplorer.SImg
             }
 
             return true;
-        }
-
-        public static T ByteToType<T>(BinaryReader reader)
-        {
-            var bytes = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
-
-            var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            var theStructure = (T) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-            handle.Free();
-
-            return theStructure;
         }
 
         private abstract class ChunkBase
