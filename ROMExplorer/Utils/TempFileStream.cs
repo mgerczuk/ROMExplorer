@@ -9,12 +9,13 @@
 // 
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed to in writing, software 
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using System;
 using System.IO;
 
 namespace ROMExplorer.Utils
@@ -29,10 +30,18 @@ namespace ROMExplorer.Utils
             this.path = path;
         }
 
-        public static Stream CreateFrom(Stream srcStream)
+        public static Stream CreateFrom(Stream srcStream, Action<long> progress = null)
         {
             var destStream = new TempFileStream(GetTempFileName(), FileMode.Create, FileAccess.ReadWrite);
-            srcStream.CopyTo(destStream);
+            var buffer = new byte[4 * 1024 * 1024];
+            int read;
+            while ((read = srcStream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                destStream.Write(buffer, 0, read);
+                progress?.Invoke(destStream.Position);
+            }
+            progress?.Invoke(destStream.Position);
+
             destStream.Position = 0;
             return destStream;
         }

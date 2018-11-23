@@ -129,8 +129,9 @@ namespace ROMExplorer.BlockImg
 
             #region Implementation of ITransferListEntry
 
-            public void Perform(Stream inStream, Stream outStream)
+            public int Perform(Stream inStream, Stream outStream)
             {
+                return 0;
             }
 
             #endregion
@@ -147,8 +148,9 @@ namespace ROMExplorer.BlockImg
 
             #region Implementation of ITransferListEntry
 
-            public void Perform(Stream inStream, Stream outStream)
+            public int Perform(Stream inStream, Stream outStream)
             {
+                var done = 0;
                 foreach (var range in rangeSet)
                 {
                     outStream.Position = range.From * BLOCKSIZE;
@@ -159,7 +161,9 @@ namespace ROMExplorer.BlockImg
                         inStream.Read(buf, 0, BLOCKSIZE);
                         outStream.Write(buf, 0, BLOCKSIZE);
                     }
+                    done += nBlocks;
                 }
+                return done;
             }
 
             #endregion
@@ -176,8 +180,9 @@ namespace ROMExplorer.BlockImg
 
             #region Implementation of ITransferListEntry
 
-            public void Perform(Stream inStream, Stream outStream)
+            public int Perform(Stream inStream, Stream outStream)
             {
+                var done = 0;
                 foreach (var range in rangeSet)
                 {
                     outStream.Position = range.From * BLOCKSIZE;
@@ -185,7 +190,9 @@ namespace ROMExplorer.BlockImg
                     var nBlocks = range.To - range.From;
                     for (var i = 0; i < nBlocks; i++)
                         outStream.Write(buf, 0, BLOCKSIZE);
+                    done += nBlocks;
                 }
+                return done;
             }
 
             #endregion

@@ -104,6 +104,14 @@
     <Compile Include="Huawei\UpdateEntryViewModel.cs" />
     <Compile Include="IFileInfoFactory.cs" />
     <Compile Include="Lz4\Lz4FileInfo.cs" />
+    <Compile Include="ProgressDialog\ProgressDialog.xaml.cs">
+      <DependentUpon>ProgressDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressDialog\ProgressDialogCancellationExcpetion.cs" />
+    <Compile Include="ProgressDialog\ProgressDialogContext.cs" />
+    <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
+    <Compile Include="ProgressDialog\ProgressDialogSettings.cs" />
+    <Compile Include="ProgressDialog\WindowSettings.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Sin\SinFileInfo.cs" />
     <Compile Include="Sin\SinParserV3.cs" />
@@ -138,6 +146,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProgressDialog\ProgressDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

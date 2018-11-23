@@ -52,7 +52,8 @@ namespace ROMExplorer.Lz4
         public static Stream DecodeLz4(Stream stream)
         {
             var decoderStream = LZ4Stream.Decode(stream);
-            return TempFileStream.CreateFrom(decoderStream);
+            var total = decoderStream.Length;
+            return TempFileStream.CreateFrom(decoderStream, done => ReportProgress(done, total));
         }
 
         public static DiscDirectoryInfoTreeItemViewModel OpenLz4Stream(Stream stream)

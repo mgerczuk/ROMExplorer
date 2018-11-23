@@ -15,17 +15,14 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-using System;
-using System.IO;
-using ROMExplorer.Utils;
 using SharpCompress.Archives.Zip;
 
 namespace ROMExplorer.Ftf
 {
     internal class FtfEntryViewModel : ArchiveEntryViewModelBase
     {
-        private readonly FtfFileInfo parent;
         private readonly ZipArchiveEntry e;
+        private readonly FtfFileInfo parent;
 
         public FtfEntryViewModel(FtfFileInfo parent, ZipArchiveEntry e)
         {

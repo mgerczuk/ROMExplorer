@@ -41,12 +41,11 @@ namespace ROMExplorer.Zip
                 {
                     if (Name.EndsWith(".new.dat"))
                         return new BlockImgStream(srcStream, transferList);
-
                     if (Name.EndsWith(".new.dat.br"))
                         return new BlockImgStream(
                             new BrotliStream(srcStream, CompressionMode.Decompress), transferList);
 
-                    return TempFileStream.CreateFrom(srcStream);
+                    return TempFileStream.CreateFrom(srcStream, done => FileInfoBase.ReportProgress(done, e.Size));
                 }
             });
         }

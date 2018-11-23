@@ -28,8 +28,13 @@ namespace ROMExplorer.BlockImg
         {
             outStream = TempFileStream.Create();
 
+            long total = transferList.TotalBlocks * TransferList.BLOCKSIZE;
+            var done = 0L;
             foreach (var entry in transferList.Entries)
-                entry.Perform(inStream, outStream);
+            {
+                done += entry.Perform(inStream, outStream) * TransferList.BLOCKSIZE;
+                FileInfoBase.ReportProgress(done, total);
+            }
         }
 
         #region Overrides of Stream

@@ -9,7 +9,7 @@
 // 
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed to in writing, software 
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
@@ -20,16 +20,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Parago.Windows;
 using ROMExplorer.Annotations;
-using ROMExplorer.Utils;
 
 namespace ROMExplorer
 {
     public abstract class FileInfoBase : INotifyPropertyChanged, IDisposable
     {
+        private bool isPopupOpen;
         private DiscDirectoryInfoTreeItemViewModel root;
         private ArchiveEntryViewModelBase selectedArchiveEntry;
-        private bool isPopupOpen;
 
         public abstract IEnumerable<ArchiveEntryViewModelBase> ArchiveEntries { get; }
 
@@ -46,8 +46,14 @@ namespace ROMExplorer
                 OnPropertyChanged();
                 try
                 {
-                    using (new WaitCursor())
-                        value?.Select();
+                    if (value != null)
+                    {
+                        ProgressDialog.Execute(
+                            Application.Current.MainWindow,
+                            $"Extracting {value.Name}...",
+                            () => value.Select(),
+                            new ProgressDialogSettings(false, false, false));
+                    }
                 }
                 catch (Exception e)
                 {
@@ -70,7 +76,7 @@ namespace ROMExplorer
             }
         }
 
-        public DiscDirectoryInfoTreeItemViewModel Root  
+        public DiscDirectoryInfoTreeItemViewModel Root
         {
             get => root;
             protected set
@@ -79,6 +85,18 @@ namespace ROMExplorer
                 root = value;
                 OnPropertyChanged();
             }
+        }
+
+        #region Implementation of IDisposable
+
+        public abstract void Dispose();
+
+        #endregion
+
+        public static void ReportProgress(long done, long total)
+        {
+            var percent = 100L * done / total;
+            ProgressDialog.Current?.ReportWithCancellationCheck((int) percent, "");
         }
 
         #region Implementation of INotifyPropertyChanged
@@ -90,12 +108,6 @@ namespace ROMExplorer
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        public abstract void Dispose();
 
         #endregion
     }

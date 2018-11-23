@@ -48,6 +48,8 @@ namespace ROMExplorer.Sin
                 pos = firstOffset;
             }
 
+            var totalSize = orderedBlocks.Max(b => b.FileOffset + b.FileLen);
+
             foreach (var block in orderedBlocks)
             {
                 if (pos != block.DataOffset) throw new Exception("Unexpected");
@@ -69,6 +71,8 @@ namespace ROMExplorer.Sin
                 {
                     throw new NotImplementedException();
                 }
+
+                FileInfoBase.ReportProgress(outStream.Length, totalSize);
 
                 outStream.Seek(block.FileOffset, SeekOrigin.Begin);
                 outStream.Write(data, 0, data.Length);
@@ -222,6 +226,7 @@ namespace ROMExplorer.Sin
             public long DataLen { get; protected set; }
             public long DataOffset { get; protected set; }
             public long FileOffset { get; protected set; }
+            public abstract long FileLen { get; }
             public int HashType { get; protected set; }
             public byte[] Checksum { get; protected set; }
         }
@@ -229,6 +234,12 @@ namespace ROMExplorer.Sin
         private class AddrBlock : CopyBlockBase
         {
             public const int TAG = 0x41444452; // "ADDR"
+
+            #region Overrides of CopyBlockBase
+
+            public override long FileLen => DataLen;
+
+            #endregion
 
             public static AddrBlock Read(BinaryReader r, int tag)
             {
@@ -256,6 +267,12 @@ namespace ROMExplorer.Sin
             public const int TAG = 0x4C5A3441; // "LZ4A"
 
             public long UncompDataLen { get; private set; }
+
+            #region Overrides of CopyBlockBase
+
+            public override long FileLen => UncompDataLen;
+
+            #endregion
 
             public static LZ4Block Read(BinaryReader r, int tag)
             {

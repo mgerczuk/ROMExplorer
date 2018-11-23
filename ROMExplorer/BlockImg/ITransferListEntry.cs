@@ -21,6 +21,6 @@ namespace ROMExplorer.BlockImg
 {
     internal interface ITransferListEntry
     {
-        void Perform(Stream inStream, Stream outStream);
+        int Perform(Stream inStream, Stream outStream);
     }
 }

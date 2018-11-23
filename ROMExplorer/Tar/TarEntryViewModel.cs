@@ -39,7 +39,7 @@ namespace ROMExplorer.Tar
                     if (Name.EndsWith(".img.lz4"))
                         return Lz4FileInfo.DecodeLz4(srcStream);
 
-                    return TempFileStream.CreateFrom(srcStream);
+                    return TempFileStream.CreateFrom(srcStream, done => FileInfoBase.ReportProgress(done,e.Size));
                 }
             });
         }
