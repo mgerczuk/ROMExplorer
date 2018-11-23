@@ -36,13 +36,13 @@ namespace ROMExplorer.Sin
 
         public static Stream DecodeSin(Stream stream)
         {
-            var version = stream.ReadByte();
+            var reader = new BinaryReader(stream);
+            var version = reader.ReadByte();
             switch (version)
             {
                 case 3:
-                    var v3 = new SinParserV3(stream);
                     var tempStream = TempFileStream.Create();
-                    v3.CopyTo(tempStream);
+                    SinParserV3.CopyTo(reader,tempStream);
                     return tempStream;
             }
 

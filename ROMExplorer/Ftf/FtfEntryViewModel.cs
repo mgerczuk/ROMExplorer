@@ -24,36 +24,29 @@ namespace ROMExplorer.Ftf
 {
     internal class FtfEntryViewModel : ArchiveEntryViewModelBase
     {
-        private readonly Lazy<Stream> getStream;
         private readonly FtfFileInfo parent;
+        private readonly ZipArchiveEntry e;
 
         public FtfEntryViewModel(FtfFileInfo parent, ZipArchiveEntry e)
         {
             this.parent = parent;
+            this.e = e;
             this.parent = parent;
             Name = e.Key;
-            getStream = new Lazy<Stream>(delegate
-            {
-                using (var srcStream = e.OpenEntryStream())
-                {
-                    return TempFileStream.CreateFrom(srcStream);
-                }
-            });
         }
 
         #region Overrides of ArchiveEntryViewModelBase
 
         public override void Dispose()
         {
-            if (getStream.IsValueCreated)
-                getStream.Value.Dispose();
         }
 
         public override void Select()
         {
-            var stream = getStream.Value;
-            stream.Position = 0;
-            parent.OpenSinStream(stream);
+            using (var srcStream = e.OpenEntryStream())
+            {
+                parent.OpenSinStream(srcStream);
+            }
         }
 
         public override bool IsImage =>

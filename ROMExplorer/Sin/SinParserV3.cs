@@ -19,127 +19,120 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using K4os.Compression.LZ4;
 using ROMExplorer.Utils;
 
 namespace ROMExplorer.Sin
 {
+    // This class is inspired by Androxyde's Flashtool
+    // https://github.com/Androxyde/Flashtool
     internal class SinParserV3
     {
-        public static byte[] MMCF = {(byte) 'M', (byte) 'M', (byte) 'C', (byte) 'F'};
-        public static byte[] ADDR = {(byte) 'A', (byte) 'D', (byte) 'D', (byte) 'R'};
-        public static byte[] LZ4A = {(byte) 'L', (byte) 'Z', (byte) '4', (byte) 'A'};
-
-        private readonly Stream stream;
-        private readonly Header header;
-        private readonly IList<HashBlock> blocks = new List<HashBlock>();
-        private readonly byte[] cert;
-        private readonly int certLen;
-        private readonly List<object> dataBlocks;
-        private readonly DataHeader dataHeader;
-
-        public SinParserV3(Stream stream)
+        public static void CopyTo(BinaryReader reader, Stream outStream)
         {
-            this.stream = stream;
-            var r = new BinaryReader(stream);
-            header = Header.Read(r);
+            // This implementation uses a BinaryReader without any Seek operation
+            // so it can be used with an archive stream
 
-            if (header.hashLen > header.headerLen) throw new Exception("Error parsing sin file");
+            var header = SinHeader.Read(reader);
+            var dataHeader = MmcfBlock.Read(reader);
 
-            var pos = stream.Position;
+            var orderedBlocks = dataHeader.DataBlocks.OrderBy(b => b.DataOffset).ToList();
 
-            while (stream.Position < pos + header.hashLen)
-                blocks.Add(HashBlock.Read(r, header.hashType));
+            var dummy = reader.ReadInt64BE(); // ??
+            var pos = 0L;
 
-            certLen = r.ReadInt32BE();
-            cert = r.ReadBytes(certLen);
-
-            var mmcfMagic = r.ReadBytes(4);
-            if (mmcfMagic.SequenceEqual(MMCF))
+            var firstOffset = orderedBlocks.FirstOrDefault()?.DataOffset ?? 0L;
+            if (firstOffset > pos)
             {
-                dataHeader = DataHeader.Read(r);
-                var addrLength = dataHeader.mmcfLen - dataHeader.gptpLen;
-                long read = 0;
-                dataBlocks = new List<object>();
-                while (read < addrLength)
-                {
-                    var amagic = r.ReadBytes(4);
-                    read += 4;
-
-                    if (amagic.SequenceEqual(ADDR))
-                    {
-                        var addrBlock = AddrBlock.Read(r);
-                        dataBlocks.Add(addrBlock);
-                        read += addrBlock.blockLen - 4;
-                    }
-                    else if (amagic.SequenceEqual(LZ4A))
-                    {
-                        // TODO: not yet tested...
-                        var lz4Block = LZ4Block.Read(r);
-                        dataBlocks.Add(lz4Block);
-                        read += lz4Block.blockLen - 4;
-                    }
-                    else
-                    {
-                        throw new Exception("unexpected magic pattern.");
-                    }
-                }
+                reader.ReadBytes((int) firstOffset); // ??
+                pos = firstOffset;
             }
-            else
+
+            foreach (var block in orderedBlocks)
             {
-                dataHeader = new DataHeader {gptpLen = 0, mmcfLen = 0};
+                if (pos != block.DataOffset) throw new Exception("Unexpected");
+
+                var data = reader.ReadBytes((int) block.DataLen);
+                pos += block.DataLen;
+
+                if (block is AddrBlock)
+                {
+                    // fall through
+                }
+                else if (block is LZ4Block lz4Block)
+                {
+                    var uncompData = new byte[lz4Block.UncompDataLen];
+                    LZ4Codec.Decode(data, uncompData);
+                    data = uncompData;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                outStream.Seek(block.FileOffset, SeekOrigin.Begin);
+                outStream.Write(data, 0, data.Length);
             }
         }
 
-        public void CopyTo(Stream outStream)
-        {
-            if (dataHeader.mmcfLen > 0)
-            {
-                var dataOffset = header.headerLen + dataHeader.mmcfLen + 8;
+        // SIN file header seems to have some kind of tag-length-value structure
 
-                foreach (var block in dataBlocks)
-                {
-                    if (block is AddrBlock addrBlock)
-                    {
-                        stream.Seek(dataOffset + addrBlock.dataOffset, SeekOrigin.Begin);
-                        outStream.Seek(addrBlock.fileOffset, SeekOrigin.Begin);
-                        var data = new byte[addrBlock.dataLen];
-                        var nbread = stream.Read(data, 0, (int) addrBlock.dataLen);
-                        outStream.Write(data, 0, (int)addrBlock.dataLen);
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
-                }
-            }
-            else
+        private abstract class BlockBase
+        {
+            public int Tag { get; private set; }
+            public int Length { get; private set; }
+
+            protected void Init(BinaryReader r, int tag)
             {
-                throw new NotImplementedException();
+                Tag = tag;
+                Length = r.ReadInt32BE();
+                var reader = new BinaryReader(new MemoryStream(r.ReadBytes(Length - 8)));
+                ReadData(reader);
             }
+
+            protected abstract void ReadData(BinaryReader r);
         }
 
-        private struct Header
+        private class SinHeader : BlockBase
         {
-            public byte[] magic;
-            public int headerLen;
-            public int payloadType;
-            public int hashType;
-            public int reserved;
-            public int hashLen;
+            private const int TAG = 0x0353494e; // 0x03 "SIN"
 
-            public static Header Read(BinaryReader r)
+            public IList<HashBlock> Blocks { get; } = new List<HashBlock>();
+
+            public static SinHeader Read(BinaryReader r)
             {
-                var h = new Header();
-
-                h.magic = r.ReadBytes(3);
-                h.headerLen = r.ReadInt32BE();
-                h.payloadType = r.ReadInt32BE();
-                h.hashType = r.ReadInt32BE();
-                h.reserved = r.ReadInt32BE();
-                h.hashLen = r.ReadInt32BE();
-
+                // first byte is already read to determine SIN file version!
+                var bytes = r.ReadBytes(3);
+                var tag = (3 << 24) | (bytes[0] << 16) | (bytes[1] << 8) | bytes[2];
+                var h = new SinHeader();
+                h.Init(r, tag);
                 return h;
             }
+
+            #region Overrides of BlockBase
+
+            protected override void ReadData(BinaryReader r)
+            {
+                if (Tag != TAG) throw new Exception($"Invalid header magic number 0x{Tag:4X}");
+
+                var payloadType = r.ReadInt32BE();
+                var hashType = r.ReadInt32BE();
+                var reserved = r.ReadInt32BE();
+                var hashLen = r.ReadInt32BE();
+
+                if (hashLen > Length) throw new Exception("Error parsing sin file");
+
+                var pos = r.BaseStream.Position;
+
+                while (r.BaseStream.Position < pos + hashLen)
+                    Blocks.Add(HashBlock.Read(r, hashType));
+
+                var certLen = r.ReadInt32BE();
+                certLen = (certLen + 3) / 4 * 4; // ???
+                var cert = r.ReadBytes(certLen);
+            }
+
+            #endregion
         }
 
         private struct HashBlock
@@ -160,84 +153,131 @@ namespace ROMExplorer.Sin
             }
         }
 
-        private struct DataHeader
+        private class MmcfBlock : BlockBase
         {
-            //public byte[] mmcfMagic;
-            public int mmcfLen;
+            private const int TAG = 0x4d4d4346; // "MMCF"
 
-            public byte[] gptpMagic;
-            public int gptpLen;
-            public byte[] gptpuid;
+            public List<CopyBlockBase> DataBlocks { get; } = new List<CopyBlockBase>();
 
-            public static DataHeader
-                Read(BinaryReader r)
+            public static MmcfBlock Read(BinaryReader r)
             {
-                var h = new DataHeader();
-
-                //h.mmcfMagic = r.ReadBytes(4);
-
-                //if (!h.mmcfMagic.SequenceEqual(MMCF))
-                //    return null;
-
-                h.mmcfLen = r.ReadInt32BE();
-                h.gptpMagic = r.ReadBytes(4);
-                h.gptpLen = r.ReadInt32BE();
-                h.gptpuid = r.ReadBytes(h.gptpLen - 8);
-
+                var h = new MmcfBlock();
+                h.Init(r, r.ReadInt32BE());
                 return h;
             }
+
+            #region Overrides of BlockBase
+
+            protected override void ReadData(BinaryReader r)
+            {
+                if (Tag != TAG) throw new Exception($"Invalid header magic number 0x{Tag:4X}");
+
+                GptpData.Read(r);
+
+                while (r.PeekChar() >= 0)
+                {
+                    var tag = r.ReadInt32BE();
+                    switch (tag)
+                    {
+                        case AddrBlock.TAG: // ADDR
+                            DataBlocks.Add(AddrBlock.Read(r, tag));
+                            break;
+                        case LZ4Block.TAG: // LZ4A
+                            DataBlocks.Add(LZ4Block.Read(r, tag));
+                            break;
+                        default:
+                            throw new Exception("Unknown block magic number 0x{tag:4X}");
+                    }
+                }
+            }
+
+            #endregion
         }
 
-        private struct AddrBlock
+        private class GptpData : BlockBase
         {
-            public int blockLen;
-            public long dataOffset;
-            public long dataLen;
-            public long fileOffset;
-            public int hashType;
-            public byte[] checksum;
+            private const int TAG = 0x47505450; // "GPTP"
 
-            public static AddrBlock Read(BinaryReader r)
+            public static GptpData Read(BinaryReader r)
             {
-                var b = new AddrBlock();
-
-                b.blockLen = r.ReadInt32BE();
-                b.dataOffset = r.ReadInt64BE();
-                b.dataLen = r.ReadInt64BE();
-                b.fileOffset = r.ReadInt64BE();
-                b.hashType = r.ReadInt32BE();
-                b.checksum = r.ReadBytes(b.blockLen - 36);
-
-                return b;
+                var h = new GptpData();
+                h.Init(r, r.ReadInt32BE());
+                return h;
             }
+
+            #region Overrides of BlockBase
+
+            protected override void ReadData(BinaryReader r)
+            {
+                if (Tag != TAG) throw new Exception($"Invalid header magic number 0x{Tag:4X}");
+
+                var gptpuid = r.ReadBytes(Length - 8);
+            }
+
+            #endregion
         }
 
-        private struct LZ4Block
+        private abstract class CopyBlockBase : BlockBase
         {
-            public int blockLen;
-            public long dataOffset;
-            public long uncompDataLen;
-            public long compDataLen;
-            public long fileOffset;
-            public long reserved;
-            public int hashType;
-            public byte[] checksum;
+            public long DataLen { get; protected set; }
+            public long DataOffset { get; protected set; }
+            public long FileOffset { get; protected set; }
+            public int HashType { get; protected set; }
+            public byte[] Checksum { get; protected set; }
+        }
 
-            public static LZ4Block Read(BinaryReader r)
+        private class AddrBlock : CopyBlockBase
+        {
+            public const int TAG = 0x41444452; // "ADDR"
+
+            public static AddrBlock Read(BinaryReader r, int tag)
             {
-                var b = new LZ4Block();
-
-                b.blockLen = r.ReadInt32BE();
-                b.dataOffset = r.ReadInt64BE();
-                b.uncompDataLen = r.ReadInt64BE();
-                b.compDataLen = r.ReadInt64BE();
-                b.fileOffset = r.ReadInt64BE();
-                b.reserved = r.ReadInt64BE();
-                b.hashType = r.ReadInt32BE();
-                b.checksum = r.ReadBytes(b.blockLen - 52);
-
-                return b;
+                var h = new AddrBlock();
+                h.Init(r, tag);
+                return h;
             }
+
+            #region Overrides of BlockBase
+
+            protected override void ReadData(BinaryReader r)
+            {
+                DataOffset = r.ReadInt64BE();
+                DataLen = r.ReadInt64BE();
+                FileOffset = r.ReadInt64BE();
+                HashType = r.ReadInt32BE();
+                Checksum = r.ReadBytes(Length - 36);
+            }
+
+            #endregion
+        }
+
+        private class LZ4Block : CopyBlockBase
+        {
+            public const int TAG = 0x4C5A3441; // "LZ4A"
+
+            public long UncompDataLen { get; private set; }
+
+            public static LZ4Block Read(BinaryReader r, int tag)
+            {
+                var h = new LZ4Block();
+                h.Init(r, tag);
+                return h;
+            }
+
+            #region Overrides of BlockBase
+
+            protected override void ReadData(BinaryReader r)
+            {
+                DataOffset = r.ReadInt64BE();
+                UncompDataLen = r.ReadInt64BE();
+                DataLen = r.ReadInt64BE();
+                FileOffset = r.ReadInt64BE();
+                var reserved = r.ReadInt64BE();
+                HashType = r.ReadInt32BE();
+                Checksum = r.ReadBytes(Length - 52);
+            }
+
+            #endregion
         }
     }
 }
