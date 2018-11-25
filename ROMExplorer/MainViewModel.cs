@@ -28,6 +28,7 @@ using Delay;
 using DiscUtils;
 using GongSolutions.Wpf.DragDrop;
 using Microsoft.Win32;
+using Parago.Windows;
 using ROMExplorer.Annotations;
 using ROMExplorer.Ftf;
 using ROMExplorer.Huawei;
@@ -80,9 +81,16 @@ namespace ROMExplorer
             if (dialog.ShowDialog() == true)
                 try
                 {
-                    var factory = factories[dialog.FilterIndex - 1];
-                    FileInfo = factory.Create(dialog.FileName);
-                    SourceName = dialog.FileName;
+                    ProgressDialog.Execute(
+                        Application.Current.MainWindow,
+                        $"Open {Path.GetFileName(dialog.FileName)}...",
+                        () =>
+                        {
+                            var factory = factories[dialog.FilterIndex - 1];
+                            FileInfo = factory.Create(dialog.FileName);
+                            SourceName = dialog.FileName;
+                        },
+                        new ProgressDialogSettings(false, false, false));
                 }
                 catch (Exception ex)
                 {

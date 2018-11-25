@@ -105,11 +105,8 @@ namespace ROMExplorer.Sin
 
             public static SinHeader Read(BinaryReader r)
             {
-                // first byte is already read to determine SIN file version!
-                var bytes = r.ReadBytes(3);
-                var tag = (3 << 24) | (bytes[0] << 16) | (bytes[1] << 8) | bytes[2];
                 var h = new SinHeader();
-                h.Init(r, tag);
+                h.Init(r, r.ReadInt32BE());
                 return h;
             }
 

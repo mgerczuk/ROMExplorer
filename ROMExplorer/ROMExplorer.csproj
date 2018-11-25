@@ -115,7 +115,10 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Sin\SinFileInfo.cs" />
     <Compile Include="Sin\SinParserV3.cs" />
+    <Compile Include="Sin\SonySparseStream.cs" />
     <Compile Include="Utils\BinaryReaderExtension.cs" />
+    <Compile Include="Utils\ReadOnlyStream.cs" />
+    <Compile Include="Utils\RewindableStream.cs" />
     <Compile Include="Utils\VirtualFileDataObject.cs" />
     <Compile Include="TreeRootBehavior.cs" />
     <Compile Include="Utils\RelayCommand.cs" />

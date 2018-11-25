@@ -40,9 +40,9 @@ namespace ROMExplorer.Ftf
             archiveEntries.AddRange(root0.Children);
         }
 
-        public void OpenSinStream(Stream stream)
+        public void OpenSinStream(Stream stream, long totalSize)
         {
-            Root = SinFileInfo.OpenSinStream(stream);
+            Root = SinFileInfo.OpenSinStream(stream, totalSize);
         }
 
         public class Factory : IFileInfoFactory

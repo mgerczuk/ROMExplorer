@@ -23,12 +23,13 @@ namespace ROMExplorer.Ftf
     {
         private readonly ZipArchiveEntry e;
         private readonly FtfFileInfo parent;
+        private readonly long totalSize;
 
         public FtfEntryViewModel(FtfFileInfo parent, ZipArchiveEntry e)
         {
-            this.parent = parent;
             this.e = e;
             this.parent = parent;
+            totalSize = e.Size; // openEntryStream clears Size?!?
             Name = e.Key;
         }
 
@@ -42,7 +43,7 @@ namespace ROMExplorer.Ftf
         {
             using (var srcStream = e.OpenEntryStream())
             {
-                parent.OpenSinStream(srcStream);
+                parent.OpenSinStream(srcStream, totalSize);
             }
         }
 

@@ -27,14 +27,15 @@ namespace ROMExplorer.SImg
     internal class SparseStream : Stream
     {
         private readonly List<ChunkBase> chunks = new List<ChunkBase>();
-        private readonly Stream stream;
         private long length;
         private sparse_header sparseHeader;
 
         public SparseStream(Stream stream)
         {
-            this.stream = stream;
+            this.InStream = stream;
         }
+
+        protected Stream InStream { get; }
 
         public static bool Detect(Stream stream)
         {
@@ -45,19 +46,19 @@ namespace ROMExplorer.SImg
 
         public bool Open()
         {
-            stream.Position = 0;
-            var binaryReader = new BinaryReader(stream);
+            InStream.Position = 0;
+            var binaryReader = new BinaryReader(InStream);
             sparseHeader = binaryReader.ReadStruct<sparse_header>();
             length = sparseHeader.total_blks * sparseHeader.blk_sz;
             if (sparseHeader.magic != SPARSE_HEADER_MAGIC)
                 return false;
 
-            stream.Position += sparseHeader.file_hdr_sz - SPARSE_HEADER_LEN;
+            InStream.Position += sparseHeader.file_hdr_sz - SPARSE_HEADER_LEN;
 
             for (var i = 0; i < sparseHeader.total_chunks; i++)
             {
                 var chunkHeader = binaryReader.ReadStruct<chunk_header>();
-                stream.Position += sparseHeader.chunk_hdr_sz - CHUNK_HEADER_LEN;
+                InStream.Position += sparseHeader.chunk_hdr_sz - CHUNK_HEADER_LEN;
 
                 switch (chunkHeader.chunk_type)
                 {
@@ -68,8 +69,8 @@ namespace ROMExplorer.SImg
                             Debug.WriteLine($"Bogus chunk size for chunk {i}, type Raw");
                             return false;
                         }
-                        chunks.Add(new RawChunk(stream.Position, chunkHeader.chunk_sz * sparseHeader.blk_sz));
-                        stream.Position += chunkHeader.chunk_sz * sparseHeader.blk_sz;
+                        chunks.Add(new RawChunk(InStream.Position, chunkHeader.chunk_sz * sparseHeader.blk_sz));
+                        InStream.Position += chunkHeader.chunk_sz * sparseHeader.blk_sz;
                         break;
 
                     case CHUNK_TYPE_DONT_CARE:
@@ -151,7 +152,7 @@ namespace ROMExplorer.SImg
         // see https://android.googlesource.com/platform/system/extras/+/ics-mr1-release/ext4_utils/sparse_format.h
 
 #pragma warning disable 0649
-        private struct sparse_header
+        protected struct sparse_header
         {
             public uint magic; /* 0xed26ff3a */
             public ushort major_version; /* (0x1) - reject images with higher major versions */
@@ -168,19 +169,19 @@ namespace ROMExplorer.SImg
         }
 #pragma warning restore 0649
 
-        private const uint SPARSE_HEADER_MAGIC = 0xed26ff3a;
+        protected const uint SPARSE_HEADER_MAGIC = 0xed26ff3a;
 
-        private const ushort CHUNK_TYPE_RAW = 0xCAC1;
+        protected const ushort CHUNK_TYPE_RAW = 0xCAC1;
         private const ushort CHUNK_TYPE_FILL = 0xCAC2;
-        private const ushort CHUNK_TYPE_DONT_CARE = 0xCAC3;
+        protected const ushort CHUNK_TYPE_DONT_CARE = 0xCAC3;
         private const ushort CHUNK_TYPE_CRC32 = 0xCAC4;
 
-        private static readonly uint SPARSE_HEADER_LEN = (uint) Marshal.SizeOf(typeof(sparse_header));
+        protected static readonly uint SPARSE_HEADER_LEN = (uint) Marshal.SizeOf(typeof(sparse_header));
 
-        private static readonly uint CHUNK_HEADER_LEN = (uint) Marshal.SizeOf(typeof(chunk_header));
+        protected static readonly uint CHUNK_HEADER_LEN = (uint) Marshal.SizeOf(typeof(chunk_header));
 
 #pragma warning disable 0649
-        private struct chunk_header
+        protected struct chunk_header
         {
             public ushort chunk_type; /* 0xCAC1 -> raw; 0xCAC2 -> fill; 0xCAC3 -> don't care */
             public ushort reserved1;
@@ -198,7 +199,7 @@ namespace ROMExplorer.SImg
             base.Dispose(disposing);
 
             if (disposing)
-                stream.Dispose();
+                InStream.Dispose();
         }
 
         public override void Flush()
@@ -224,7 +225,7 @@ namespace ROMExplorer.SImg
             foreach (var chunk in chunks)
                 if (pos < chunk.Size)
                 {
-                    var read = chunk.Read(buffer, offset, count, stream, pos);
+                    var read = chunk.Read(buffer, offset, count, InStream, pos);
                     pos = 0;
                     c -= read;
 

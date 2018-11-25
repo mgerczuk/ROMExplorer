@@ -29,10 +29,12 @@ namespace ROMExplorer.Zip
     {
         private readonly Lazy<Stream> getStream;
         private readonly ZipFileInfo parent;
+        private readonly long totalSize;
 
         public ZipEntryViewModel(ZipFileInfo parent, ZipArchiveEntry e)
         {
             this.parent = parent;
+            totalSize = e.Size;
             Name = e.Key;
             getStream = new Lazy<Stream>(delegate
             {
@@ -45,7 +47,7 @@ namespace ROMExplorer.Zip
                         return new BlockImgStream(
                             new BrotliStream(srcStream, CompressionMode.Decompress), transferList);
 
-                    return TempFileStream.CreateFrom(srcStream, done => FileInfoBase.ReportProgress(done, e.Size));
+                    return TempFileStream.CreateFrom(srcStream, done => FileInfoBase.ReportProgress(done, totalSize));
                 }
             });
         }
