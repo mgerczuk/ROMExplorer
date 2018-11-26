@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="ROM Explorer" Language="1033" Version="0.9.0.0" Manufacturer="Martin Gerczuk" UpgradeCode="c48ee12c-7e79-41e9-924c-db485166fb78">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="D99CF21E-8BF7-4430-9B3A-86A57755D06F">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+	                Name="ROM Explorer"
+	                Description="ROM Explorer"
+	                Target="[INSTALLFOLDER]ROMExplorer.exe"
+	                WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="ProductFeature" Title="Setup" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+    </UI>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="ROM Explorer" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="ROM Explorer"/>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+</Wix>

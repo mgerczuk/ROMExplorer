@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="BouncyCastle.Crypto.dll" Guid="A4E3CDD0-58FE-42EC-8153-2E92AD21281A">
+        <File Id="BouncyCastle.Crypto.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\BouncyCastle.Crypto.dll" />
+      </Component>
+      <Component Id="brolib32.dll" Guid="D208506A-2327-4722-895A-4CD0F6599DC6">
+        <File Id="brolib32.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\brolib32.dll" />
+      </Component>
+      <Component Id="brolib64.dll" Guid="ACF7E574-8A42-46EB-B911-57703782A3B3">
+        <File Id="brolib64.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\brolib64.dll" />
+      </Component>
+      <Component Id="Brotli.NET.dll" Guid="AC88195B-9560-4857-AAB8-FC3AA226B543">
+        <File Id="Brotli.NET.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\Brotli.NET.dll" />
+      </Component>
+      <Component Id="DiscUtils.Core.dll" Guid="8A42ABC6-0711-43E5-B6CF-15D0D56D491D">
+        <File Id="DiscUtils.Core.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\DiscUtils.Core.dll" />
+      </Component>
+      <Component Id="DiscUtils.Ext.dll" Guid="4632CCCC-1D7F-463B-A8F0-05A09A28D437">
+        <File Id="DiscUtils.Ext.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\DiscUtils.Ext.dll" />
+      </Component>
+      <Component Id="DiscUtils.Streams.dll" Guid="08AFE71E-3F3F-4C51-A93E-9ABAE5FAB218">
+        <File Id="DiscUtils.Streams.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\DiscUtils.Streams.dll" />
+      </Component>
+      <Component Id="GongSolutions.Wpf.DragDrop.dll" Guid="5FE91E16-8584-4339-A7ED-C0C7E61B31A8">
+        <File Id="GongSolutions.Wpf.DragDrop.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\GongSolutions.Wpf.DragDrop.dll" />
+      </Component>
+      <Component Id="HuaweiUpdateLibrary.dll" Guid="84EBEA49-004E-447C-9964-2A6DE1651792">
+        <File Id="HuaweiUpdateLibrary.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\HuaweiUpdateLibrary.dll" />
+      </Component>
+      <Component Id="K4os.Compression.LZ4.dll" Guid="A508503A-10F6-4CED-BE64-24361A63876A">
+        <File Id="K4os.Compression.LZ4.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\K4os.Compression.LZ4.dll" />
+      </Component>
+      <Component Id="K4os.Compression.LZ4.Streams.dll" Guid="EAF67B65-E8DE-43D5-9180-63E411F95D93">
+        <File Id="K4os.Compression.LZ4.Streams.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\K4os.Compression.LZ4.Streams.dll" />
+      </Component>
+      <Component Id="K4os.Hash.xxHash.dll" Guid="EBDE854F-D12A-4F27-8FA3-308EFD0D17C3">
+        <File Id="K4os.Hash.xxHash.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\K4os.Hash.xxHash.dll" />
+      </Component>
+      <Component Id="Microsoft.Win32.Primitives.dll" Guid="16CC0BC5-C4C1-4FBB-8844-62E929B366C2">
+        <File Id="Microsoft.Win32.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\Microsoft.Win32.Primitives.dll" />
+      </Component>
+      <Component Id="netstandard.dll" Guid="C03D1910-60EF-4E36-A47F-F942998F0075">
+        <File Id="netstandard.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\netstandard.dll" />
+      </Component>
+      <Component Id="ROMExplorer.exe" Guid="EA756F58-057F-461F-B50B-6B24953111B9">
+        <File Id="ROMExplorer.exe" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\ROMExplorer.exe" />
+      </Component>
+      <Component Id="ROMExplorer.exe.config" Guid="F80597EF-5B31-45ED-B787-8675E0D66A3A">
+        <File Id="ROMExplorer.exe.config" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\ROMExplorer.exe.config" />
+      </Component>
+      <Component Id="SharpCompress.dll" Guid="3D9DBB29-11F7-4600-8B98-87293EFF60DF">
+        <File Id="SharpCompress.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\SharpCompress.dll" />
+      </Component>
+      <Component Id="System.AppContext.dll" Guid="96A1F5F9-FBDC-42F4-85E0-D7C02E51A258">
+        <File Id="System.AppContext.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.AppContext.dll" />
+      </Component>
+      <Component Id="System.Buffers.dll" Guid="7A28D2FF-E5B8-420F-97F6-50AFDEFDC0B5">
+        <File Id="System.Buffers.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Buffers.dll" />
+      </Component>
+      <Component Id="System.Collections.Concurrent.dll" Guid="FA50B832-45BD-46EE-B48C-D8ED3C4C0C1E">
+        <File Id="System.Collections.Concurrent.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Collections.Concurrent.dll" />
+      </Component>
+      <Component Id="System.Collections.dll" Guid="E713B0B1-E57F-441D-AF99-674C93B7C4D6">
+        <File Id="System.Collections.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Collections.dll" />
+      </Component>
+      <Component Id="System.Collections.NonGeneric.dll" Guid="F384E6DD-15E3-4DEC-A408-3CB6069107CD">
+        <File Id="System.Collections.NonGeneric.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Collections.NonGeneric.dll" />
+      </Component>
+      <Component Id="System.Collections.Specialized.dll" Guid="F4ADD27D-35F9-4968-8C89-4340DE7304B5">
+        <File Id="System.Collections.Specialized.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Collections.Specialized.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.dll" Guid="8DB62639-A330-4E51-9A53-69788116BA9F">
+        <File Id="System.ComponentModel.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.ComponentModel.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.EventBasedAsync.dll" Guid="5710BFAF-0320-4BA3-9947-65CFB4D553DE">
+        <File Id="System.ComponentModel.EventBasedAsync.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.ComponentModel.EventBasedAsync.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.Primitives.dll" Guid="5C7BC289-E122-49C3-9D34-FBBBE9EDD9D2">
+        <File Id="System.ComponentModel.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.ComponentModel.Primitives.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.TypeConverter.dll" Guid="7935A144-BBD9-4DAF-B9E1-BDF76BC85660">
+        <File Id="System.ComponentModel.TypeConverter.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.ComponentModel.TypeConverter.dll" />
+      </Component>
+      <Component Id="System.Console.dll" Guid="C851063F-25B1-445E-AF53-8D1F4C0C38FE">
+        <File Id="System.Console.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Console.dll" />
+      </Component>
+      <Component Id="System.Data.Common.dll" Guid="52786ECA-4E87-4CE3-B677-CF75AD5564D8">
+        <File Id="System.Data.Common.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Data.Common.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Contracts.dll" Guid="9B231C6A-7B17-4AB6-B5FF-A9F92FFF7DCB">
+        <File Id="System.Diagnostics.Contracts.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.Contracts.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Debug.dll" Guid="F8DFC3AF-54A4-4C19-AA0F-1249731E492D">
+        <File Id="System.Diagnostics.Debug.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.Debug.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.FileVersionInfo.dll" Guid="85651752-AB59-42CF-876B-AE52EB6D9B98">
+        <File Id="System.Diagnostics.FileVersionInfo.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.FileVersionInfo.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Process.dll" Guid="33206AE0-35E3-4CF1-BE86-1AED1461D71A">
+        <File Id="System.Diagnostics.Process.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.Process.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.StackTrace.dll" Guid="7B3E4604-83C9-4F15-8DCE-99267EBC5F4A">
+        <File Id="System.Diagnostics.StackTrace.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.StackTrace.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.TextWriterTraceListener.dll" Guid="A3E922E8-587C-42D5-9C22-129FD8ADBF62">
+        <File Id="System.Diagnostics.TextWriterTraceListener.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.TextWriterTraceListener.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Tools.dll" Guid="6B301BE9-26AF-43E7-BA50-6DADE0F815E6">
+        <File Id="System.Diagnostics.Tools.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.Tools.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.TraceSource.dll" Guid="0E43BFD3-8982-438E-B394-420240C7F646">
+        <File Id="System.Diagnostics.TraceSource.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.TraceSource.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Tracing.dll" Guid="DD6133AF-CAE2-4A6F-8639-A6D84A139B9A">
+        <File Id="System.Diagnostics.Tracing.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Diagnostics.Tracing.dll" />
+      </Component>
+      <Component Id="System.Drawing.Primitives.dll" Guid="9D193BC1-21BF-4C20-9DF9-39E9482F186C">
+        <File Id="System.Drawing.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Drawing.Primitives.dll" />
+      </Component>
+      <Component Id="System.Dynamic.Runtime.dll" Guid="D14012AC-1DE4-44D6-BD4F-B3CF9D8DF495">
+        <File Id="System.Dynamic.Runtime.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Dynamic.Runtime.dll" />
+      </Component>
+      <Component Id="System.Globalization.Calendars.dll" Guid="44B63647-0EA5-4D7E-9B9C-7F00A744B43E">
+        <File Id="System.Globalization.Calendars.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Globalization.Calendars.dll" />
+      </Component>
+      <Component Id="System.Globalization.dll" Guid="65D1D919-A5D2-48F1-B9BF-4FCBB4BEEAEB">
+        <File Id="System.Globalization.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Globalization.dll" />
+      </Component>
+      <Component Id="System.Globalization.Extensions.dll" Guid="AD45CA65-1ED5-452C-A6B1-E635E864A706">
+        <File Id="System.Globalization.Extensions.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Globalization.Extensions.dll" />
+      </Component>
+      <Component Id="System.IO.Compression.dll" Guid="EA81BE70-2053-4495-8AA1-664D2AAC4E37">
+        <File Id="System.IO.Compression.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.Compression.dll" />
+      </Component>
+      <Component Id="System.IO.Compression.ZipFile.dll" Guid="5B32C59C-2955-40E0-AFA1-464331C4AB4F">
+        <File Id="System.IO.Compression.ZipFile.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.Compression.ZipFile.dll" />
+      </Component>
+      <Component Id="System.IO.dll" Guid="02D861BF-7D51-4BD3-B865-533FB46D20AF">
+        <File Id="System.IO.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.dll" />
+      </Component>
+      <Component Id="System.IO.FileSystem.dll" Guid="E7BC9FD6-1EDD-4B61-9B23-6F0156297B0E">
+        <File Id="System.IO.FileSystem.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.FileSystem.dll" />
+      </Component>
+      <Component Id="System.IO.FileSystem.DriveInfo.dll" Guid="5F65937C-166C-438B-84BD-4F3CA287950A">
+        <File Id="System.IO.FileSystem.DriveInfo.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.FileSystem.DriveInfo.dll" />
+      </Component>
+      <Component Id="System.IO.FileSystem.Primitives.dll" Guid="34D18812-694A-4D05-A145-FA5D8BFE9ACA">
+        <File Id="System.IO.FileSystem.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.FileSystem.Primitives.dll" />
+      </Component>
+      <Component Id="System.IO.FileSystem.Watcher.dll" Guid="E978A174-B30B-4839-AE78-12B48A104355">
+        <File Id="System.IO.FileSystem.Watcher.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.FileSystem.Watcher.dll" />
+      </Component>
+      <Component Id="System.IO.IsolatedStorage.dll" Guid="D000D344-957D-44A8-9B37-0F90F28F3F6C">
+        <File Id="System.IO.IsolatedStorage.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.IsolatedStorage.dll" />
+      </Component>
+      <Component Id="System.IO.MemoryMappedFiles.dll" Guid="84B34B96-932A-4CAC-8FA2-4BCBEB6133E9">
+        <File Id="System.IO.MemoryMappedFiles.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.MemoryMappedFiles.dll" />
+      </Component>
+      <Component Id="System.IO.Pipes.dll" Guid="7649EA56-2B36-4305-B762-F5A907102222">
+        <File Id="System.IO.Pipes.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.Pipes.dll" />
+      </Component>
+      <Component Id="System.IO.UnmanagedMemoryStream.dll" Guid="D60BA156-1861-488D-9E81-6086CCDD54BE">
+        <File Id="System.IO.UnmanagedMemoryStream.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.IO.UnmanagedMemoryStream.dll" />
+      </Component>
+      <Component Id="System.Linq.dll" Guid="9CB50DAE-A4D9-4C11-905B-436482237529">
+        <File Id="System.Linq.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Linq.dll" />
+      </Component>
+      <Component Id="System.Linq.Expressions.dll" Guid="EE7DCB99-B79D-471B-85E3-A310F567660C">
+        <File Id="System.Linq.Expressions.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Linq.Expressions.dll" />
+      </Component>
+      <Component Id="System.Linq.Parallel.dll" Guid="96E56948-6DB8-4FB3-92E9-93D8B35DD22B">
+        <File Id="System.Linq.Parallel.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Linq.Parallel.dll" />
+      </Component>
+      <Component Id="System.Linq.Queryable.dll" Guid="9E8B77D9-A442-450A-BE44-1D56C0950C20">
+        <File Id="System.Linq.Queryable.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Linq.Queryable.dll" />
+      </Component>
+      <Component Id="System.Memory.dll" Guid="2A7606D3-E4F6-4FDF-8EEE-D9F7BF5DC093">
+        <File Id="System.Memory.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Memory.dll" />
+      </Component>
+      <Component Id="System.Net.Http.dll" Guid="7619D8CE-62BE-4D4F-871C-C000044114D0">
+        <File Id="System.Net.Http.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.Http.dll" />
+      </Component>
+      <Component Id="System.Net.NameResolution.dll" Guid="A54EF869-031C-46DC-B0E3-6E9E11D7A7C0">
+        <File Id="System.Net.NameResolution.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.NameResolution.dll" />
+      </Component>
+      <Component Id="System.Net.NetworkInformation.dll" Guid="459B633D-0316-4A88-8D10-07AA4C78D676">
+        <File Id="System.Net.NetworkInformation.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.NetworkInformation.dll" />
+      </Component>
+      <Component Id="System.Net.Ping.dll" Guid="2F847AF4-51F1-4EB9-92EE-193F59455FD3">
+        <File Id="System.Net.Ping.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.Ping.dll" />
+      </Component>
+      <Component Id="System.Net.Primitives.dll" Guid="C2D9CBBC-A759-4C0C-8767-08D96FB11946">
+        <File Id="System.Net.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.Primitives.dll" />
+      </Component>
+      <Component Id="System.Net.Requests.dll" Guid="9B27AC25-E9D7-49F8-8D91-FE00ACEE4334">
+        <File Id="System.Net.Requests.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.Requests.dll" />
+      </Component>
+      <Component Id="System.Net.Security.dll" Guid="DC9C7784-66B3-4539-A52E-092D306C8A31">
+        <File Id="System.Net.Security.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.Security.dll" />
+      </Component>
+      <Component Id="System.Net.Sockets.dll" Guid="FC246E87-5FF9-411D-BA38-D19CBAA015DA">
+        <File Id="System.Net.Sockets.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.Sockets.dll" />
+      </Component>
+      <Component Id="System.Net.WebHeaderCollection.dll" Guid="E872A438-2772-4ABC-A3D5-C31742A82ADF">
+        <File Id="System.Net.WebHeaderCollection.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.WebHeaderCollection.dll" />
+      </Component>
+      <Component Id="System.Net.WebSockets.Client.dll" Guid="CBA80083-B83E-4B67-A5E5-BD411171AC25">
+        <File Id="System.Net.WebSockets.Client.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.WebSockets.Client.dll" />
+      </Component>
+      <Component Id="System.Net.WebSockets.dll" Guid="F740B176-6C42-4D2D-A8C3-57496A489075">
+        <File Id="System.Net.WebSockets.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Net.WebSockets.dll" />
+      </Component>
+      <Component Id="System.Numerics.Vectors.dll" Guid="3064310E-910F-4877-BE59-32D8F58B25C7">
+        <File Id="System.Numerics.Vectors.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Numerics.Vectors.dll" />
+      </Component>
+      <Component Id="System.ObjectModel.dll" Guid="21700B81-45D7-4BDA-8380-07A812955AE6">
+        <File Id="System.ObjectModel.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.ObjectModel.dll" />
+      </Component>
+      <Component Id="System.Reflection.dll" Guid="706A2E30-5AE5-4670-9998-B788F6006F8C">
+        <File Id="System.Reflection.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Reflection.dll" />
+      </Component>
+      <Component Id="System.Reflection.Extensions.dll" Guid="6E913FCC-7F29-4F43-9B34-FDC7ABF1D8B6">
+        <File Id="System.Reflection.Extensions.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Reflection.Extensions.dll" />
+      </Component>
+      <Component Id="System.Reflection.Primitives.dll" Guid="25B8BE6A-4DF2-43D7-BCEE-47483B20F048">
+        <File Id="System.Reflection.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Reflection.Primitives.dll" />
+      </Component>
+      <Component Id="System.Resources.Reader.dll" Guid="ACF8D53C-D985-475C-A645-E7C6BC40B63B">
+        <File Id="System.Resources.Reader.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Resources.Reader.dll" />
+      </Component>
+      <Component Id="System.Resources.ResourceManager.dll" Guid="DE616631-66BC-4521-966D-C3BA3C796496">
+        <File Id="System.Resources.ResourceManager.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Resources.ResourceManager.dll" />
+      </Component>
+      <Component Id="System.Resources.Writer.dll" Guid="C7CA23B4-6130-4E4D-8218-102BE335BD98">
+        <File Id="System.Resources.Writer.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Resources.Writer.dll" />
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="9B66DB26-00AE-4DA2-8A24-B04187D0D28D">
+        <File Id="System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.CompilerServices.Unsafe.dll" />
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.VisualC.dll" Guid="6697FE85-3F03-4BD4-8339-C836CD3FCE1D">
+        <File Id="System.Runtime.CompilerServices.VisualC.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.CompilerServices.VisualC.dll" />
+      </Component>
+      <Component Id="System.Runtime.dll" Guid="9CC03BF6-3730-4B6A-8CDC-2591B8AB59AB">
+        <File Id="System.Runtime.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.dll" />
+      </Component>
+      <Component Id="System.Runtime.Extensions.dll" Guid="EADB39B4-3272-4186-A6CB-D1360E1A995F">
+        <File Id="System.Runtime.Extensions.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Extensions.dll" />
+      </Component>
+      <Component Id="System.Runtime.Handles.dll" Guid="E1A7E4E6-CB26-4AB7-A9FA-AE349A8C7AA1">
+        <File Id="System.Runtime.Handles.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Handles.dll" />
+      </Component>
+      <Component Id="System.Runtime.InteropServices.dll" Guid="D221304F-1A86-43C8-8E81-B5A0ACBB3EEB">
+        <File Id="System.Runtime.InteropServices.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.InteropServices.dll" />
+      </Component>
+      <Component Id="System.Runtime.InteropServices.RuntimeInformation.dll" Guid="2B687A28-CE65-48F1-8E91-18548F472C5F">
+        <File Id="System.Runtime.InteropServices.RuntimeInformation.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.InteropServices.RuntimeInformation.dll" />
+      </Component>
+      <Component Id="System.Runtime.Numerics.dll" Guid="7B9AA373-8920-4249-A0FD-A3E7F16DC5EC">
+        <File Id="System.Runtime.Numerics.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Numerics.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Formatters.dll" Guid="D7CCE094-A406-4E45-95A0-B7B5B21B3DDA">
+        <File Id="System.Runtime.Serialization.Formatters.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Serialization.Formatters.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Json.dll" Guid="9E77A34E-0501-4C1A-B198-EA2C7DCC7772">
+        <File Id="System.Runtime.Serialization.Json.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Serialization.Json.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Primitives.dll" Guid="17AFEF7B-5043-4103-ACE1-F0613AE9CC39">
+        <File Id="System.Runtime.Serialization.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Serialization.Primitives.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Xml.dll" Guid="7D943979-1223-4ABB-A907-3BD4739BEFD9">
+        <File Id="System.Runtime.Serialization.Xml.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Runtime.Serialization.Xml.dll" />
+      </Component>
+      <Component Id="System.Security.Claims.dll" Guid="269A5770-49E5-403B-BC64-2C3B304A0EC2">
+        <File Id="System.Security.Claims.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Claims.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.Algorithms.dll" Guid="628D5AD8-9EBA-432A-AC0A-3D064B420EA1">
+        <File Id="System.Security.Cryptography.Algorithms.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Cryptography.Algorithms.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.Csp.dll" Guid="5DFDE1E0-3FDE-45E0-A8BF-73FD53450CA0">
+        <File Id="System.Security.Cryptography.Csp.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Cryptography.Csp.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.Encoding.dll" Guid="D021A12F-B490-4927-AB6E-B713CAB68DAE">
+        <File Id="System.Security.Cryptography.Encoding.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Cryptography.Encoding.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.Primitives.dll" Guid="2A0F1D9F-A9B0-428A-84CC-09BFE4759C80">
+        <File Id="System.Security.Cryptography.Primitives.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Cryptography.Primitives.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.X509Certificates.dll" Guid="C659339A-03C4-4018-88FF-0439E7FA6E56">
+        <File Id="System.Security.Cryptography.X509Certificates.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Cryptography.X509Certificates.dll" />
+      </Component>
+      <Component Id="System.Security.Principal.dll" Guid="B1705C7C-B697-488C-80A3-C224E731D43A">
+        <File Id="System.Security.Principal.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.Principal.dll" />
+      </Component>
+      <Component Id="System.Security.SecureString.dll" Guid="E451DCD9-0E0F-4697-A6FA-A1940A2884E8">
+        <File Id="System.Security.SecureString.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Security.SecureString.dll" />
+      </Component>
+      <Component Id="System.Text.Encoding.dll" Guid="3D882A30-1C09-4153-BC17-AD52171FCD20">
+        <File Id="System.Text.Encoding.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Text.Encoding.dll" />
+      </Component>
+      <Component Id="System.Text.Encoding.Extensions.dll" Guid="E77F6702-5D29-4300-B3FC-C982715860B8">
+        <File Id="System.Text.Encoding.Extensions.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Text.Encoding.Extensions.dll" />
+      </Component>
+      <Component Id="System.Text.RegularExpressions.dll" Guid="EEB3DC44-02F9-4E79-B0F7-7AA519A14F08">
+        <File Id="System.Text.RegularExpressions.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Text.RegularExpressions.dll" />
+      </Component>
+      <Component Id="System.Threading.dll" Guid="542B082D-4F6A-4FDA-9C9A-51D0D45D685E">
+        <File Id="System.Threading.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.dll" />
+      </Component>
+      <Component Id="System.Threading.Overlapped.dll" Guid="0ED5E083-CA37-47C4-8B21-4E483FE48728">
+        <File Id="System.Threading.Overlapped.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.Overlapped.dll" />
+      </Component>
+      <Component Id="System.Threading.Tasks.dll" Guid="77DB5909-DD7C-4E0B-8882-80D4221B7C8C">
+        <File Id="System.Threading.Tasks.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.Tasks.dll" />
+      </Component>
+      <Component Id="System.Threading.Tasks.Parallel.dll" Guid="05A0692F-A52C-4497-9CA9-B8B0AB06505B">
+        <File Id="System.Threading.Tasks.Parallel.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.Tasks.Parallel.dll" />
+      </Component>
+      <Component Id="System.Threading.Thread.dll" Guid="08D04238-FA9C-4C05-B277-0D2E9DC05A00">
+        <File Id="System.Threading.Thread.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.Thread.dll" />
+      </Component>
+      <Component Id="System.Threading.ThreadPool.dll" Guid="105A47D0-0E65-4A71-A751-034A2C44DA4E">
+        <File Id="System.Threading.ThreadPool.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.ThreadPool.dll" />
+      </Component>
+      <Component Id="System.Threading.Timer.dll" Guid="00DE923F-3B51-4AFB-8F3E-7631BDA647E3">
+        <File Id="System.Threading.Timer.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Threading.Timer.dll" />
+      </Component>
+      <Component Id="System.ValueTuple.dll" Guid="1C072E38-C068-480D-87C1-8727DA758581">
+        <File Id="System.ValueTuple.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.ValueTuple.dll" />
+      </Component>
+      <Component Id="System.Windows.Interactivity.dll" Guid="83783226-E3D1-4BFC-AE5F-F63F92790835">
+        <File Id="System.Windows.Interactivity.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Windows.Interactivity.dll" />
+      </Component>
+      <Component Id="System.Xml.ReaderWriter.dll" Guid="C0138711-C26F-42F6-A277-7ADFB559637E">
+        <File Id="System.Xml.ReaderWriter.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Xml.ReaderWriter.dll" />
+      </Component>
+      <Component Id="System.Xml.XDocument.dll" Guid="893DA8F1-FCAA-48EE-8E40-889CD2F88F85">
+        <File Id="System.Xml.XDocument.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Xml.XDocument.dll" />
+      </Component>
+      <Component Id="System.Xml.XmlDocument.dll" Guid="B99CECFB-7BD9-485C-A4D9-E5FA09F85612">
+        <File Id="System.Xml.XmlDocument.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Xml.XmlDocument.dll" />
+      </Component>
+      <Component Id="System.Xml.XmlSerializer.dll" Guid="F4021C30-58AF-4727-A2EB-E8242F76B6AF">
+        <File Id="System.Xml.XmlSerializer.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Xml.XmlSerializer.dll" />
+      </Component>
+      <Component Id="System.Xml.XPath.dll" Guid="6714B6C1-163E-43DC-883B-BD1092616001">
+        <File Id="System.Xml.XPath.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Xml.XPath.dll" />
+      </Component>
+      <Component Id="System.Xml.XPath.XDocument.dll" Guid="BE476339-8126-43B5-A77F-CBADD700E45A">
+        <File Id="System.Xml.XPath.XDocument.dll" KeyPath="yes" Source="$(var.ROMExplorer.TargetDir)\System.Xml.XPath.XDocument.dll" />
+      </Component>
+
+    </DirectoryRef>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <ComponentRef Id="BouncyCastle.Crypto.dll" />
+      <ComponentRef Id="brolib32.dll" />
+      <ComponentRef Id="brolib64.dll" />
+      <ComponentRef Id="Brotli.NET.dll" />
+      <ComponentRef Id="DiscUtils.Core.dll" />
+      <ComponentRef Id="DiscUtils.Ext.dll" />
+      <ComponentRef Id="DiscUtils.Streams.dll" />
+      <ComponentRef Id="GongSolutions.Wpf.DragDrop.dll" />
+      <ComponentRef Id="HuaweiUpdateLibrary.dll" />
+      <ComponentRef Id="K4os.Compression.LZ4.dll" />
+      <ComponentRef Id="K4os.Compression.LZ4.Streams.dll" />
+      <ComponentRef Id="K4os.Hash.xxHash.dll" />
+      <ComponentRef Id="Microsoft.Win32.Primitives.dll" />
+      <ComponentRef Id="netstandard.dll" />
+      <ComponentRef Id="ROMExplorer.exe" />
+      <ComponentRef Id="ROMExplorer.exe.config" />
+      <ComponentRef Id="SharpCompress.dll" />
+      <ComponentRef Id="System.AppContext.dll" />
+      <ComponentRef Id="System.Buffers.dll" />
+      <ComponentRef Id="System.Collections.Concurrent.dll" />
+      <ComponentRef Id="System.Collections.dll" />
+      <ComponentRef Id="System.Collections.NonGeneric.dll" />
+      <ComponentRef Id="System.Collections.Specialized.dll" />
+      <ComponentRef Id="System.ComponentModel.dll" />
+      <ComponentRef Id="System.ComponentModel.EventBasedAsync.dll" />
+      <ComponentRef Id="System.ComponentModel.Primitives.dll" />
+      <ComponentRef Id="System.ComponentModel.TypeConverter.dll" />
+      <ComponentRef Id="System.Console.dll" />
+      <ComponentRef Id="System.Data.Common.dll" />
+      <ComponentRef Id="System.Diagnostics.Contracts.dll" />
+      <ComponentRef Id="System.Diagnostics.Debug.dll" />
+      <ComponentRef Id="System.Diagnostics.FileVersionInfo.dll" />
+      <ComponentRef Id="System.Diagnostics.Process.dll" />
+      <ComponentRef Id="System.Diagnostics.StackTrace.dll" />
+      <ComponentRef Id="System.Diagnostics.TextWriterTraceListener.dll" />
+      <ComponentRef Id="System.Diagnostics.Tools.dll" />
+      <ComponentRef Id="System.Diagnostics.TraceSource.dll" />
+      <ComponentRef Id="System.Diagnostics.Tracing.dll" />
+      <ComponentRef Id="System.Drawing.Primitives.dll" />
+      <ComponentRef Id="System.Dynamic.Runtime.dll" />
+      <ComponentRef Id="System.Globalization.Calendars.dll" />
+      <ComponentRef Id="System.Globalization.dll" />
+      <ComponentRef Id="System.Globalization.Extensions.dll" />
+      <ComponentRef Id="System.IO.Compression.dll" />
+      <ComponentRef Id="System.IO.Compression.ZipFile.dll" />
+      <ComponentRef Id="System.IO.dll" />
+      <ComponentRef Id="System.IO.FileSystem.dll" />
+      <ComponentRef Id="System.IO.FileSystem.DriveInfo.dll" />
+      <ComponentRef Id="System.IO.FileSystem.Primitives.dll" />
+      <ComponentRef Id="System.IO.FileSystem.Watcher.dll" />
+      <ComponentRef Id="System.IO.IsolatedStorage.dll" />
+      <ComponentRef Id="System.IO.MemoryMappedFiles.dll" />
+      <ComponentRef Id="System.IO.Pipes.dll" />
+      <ComponentRef Id="System.IO.UnmanagedMemoryStream.dll" />
+      <ComponentRef Id="System.Linq.dll" />
+      <ComponentRef Id="System.Linq.Expressions.dll" />
+      <ComponentRef Id="System.Linq.Parallel.dll" />
+      <ComponentRef Id="System.Linq.Queryable.dll" />
+      <ComponentRef Id="System.Memory.dll" />
+      <ComponentRef Id="System.Net.Http.dll" />
+      <ComponentRef Id="System.Net.NameResolution.dll" />
+      <ComponentRef Id="System.Net.NetworkInformation.dll" />
+      <ComponentRef Id="System.Net.Ping.dll" />
+      <ComponentRef Id="System.Net.Primitives.dll" />
+      <ComponentRef Id="System.Net.Requests.dll" />
+      <ComponentRef Id="System.Net.Security.dll" />
+      <ComponentRef Id="System.Net.Sockets.dll" />
+      <ComponentRef Id="System.Net.WebHeaderCollection.dll" />
+      <ComponentRef Id="System.Net.WebSockets.Client.dll" />
+      <ComponentRef Id="System.Net.WebSockets.dll" />
+      <ComponentRef Id="System.Numerics.Vectors.dll" />
+      <ComponentRef Id="System.ObjectModel.dll" />
+      <ComponentRef Id="System.Reflection.dll" />
+      <ComponentRef Id="System.Reflection.Extensions.dll" />
+      <ComponentRef Id="System.Reflection.Primitives.dll" />
+      <ComponentRef Id="System.Resources.Reader.dll" />
+      <ComponentRef Id="System.Resources.ResourceManager.dll" />
+      <ComponentRef Id="System.Resources.Writer.dll" />
+      <ComponentRef Id="System.Runtime.CompilerServices.Unsafe.dll" />
+      <ComponentRef Id="System.Runtime.CompilerServices.VisualC.dll" />
+      <ComponentRef Id="System.Runtime.dll" />
+      <ComponentRef Id="System.Runtime.Extensions.dll" />
+      <ComponentRef Id="System.Runtime.Handles.dll" />
+      <ComponentRef Id="System.Runtime.InteropServices.dll" />
+      <ComponentRef Id="System.Runtime.InteropServices.RuntimeInformation.dll" />
+      <ComponentRef Id="System.Runtime.Numerics.dll" />
+      <ComponentRef Id="System.Runtime.Serialization.Formatters.dll" />
+      <ComponentRef Id="System.Runtime.Serialization.Json.dll" />
+      <ComponentRef Id="System.Runtime.Serialization.Primitives.dll" />
+      <ComponentRef Id="System.Runtime.Serialization.Xml.dll" />
+      <ComponentRef Id="System.Security.Claims.dll" />
+      <ComponentRef Id="System.Security.Cryptography.Algorithms.dll" />
+      <ComponentRef Id="System.Security.Cryptography.Csp.dll" />
+      <ComponentRef Id="System.Security.Cryptography.Encoding.dll" />
+      <ComponentRef Id="System.Security.Cryptography.Primitives.dll" />
+      <ComponentRef Id="System.Security.Cryptography.X509Certificates.dll" />
+      <ComponentRef Id="System.Security.Principal.dll" />
+      <ComponentRef Id="System.Security.SecureString.dll" />
+      <ComponentRef Id="System.Text.Encoding.dll" />
+      <ComponentRef Id="System.Text.Encoding.Extensions.dll" />
+      <ComponentRef Id="System.Text.RegularExpressions.dll" />
+      <ComponentRef Id="System.Threading.dll" />
+      <ComponentRef Id="System.Threading.Overlapped.dll" />
+      <ComponentRef Id="System.Threading.Tasks.dll" />
+      <ComponentRef Id="System.Threading.Tasks.Parallel.dll" />
+      <ComponentRef Id="System.Threading.Thread.dll" />
+      <ComponentRef Id="System.Threading.ThreadPool.dll" />
+      <ComponentRef Id="System.Threading.Timer.dll" />
+      <ComponentRef Id="System.ValueTuple.dll" />
+      <ComponentRef Id="System.Windows.Interactivity.dll" />
+      <ComponentRef Id="System.Xml.ReaderWriter.dll" />
+      <ComponentRef Id="System.Xml.XDocument.dll" />
+      <ComponentRef Id="System.Xml.XmlDocument.dll" />
+      <ComponentRef Id="System.Xml.XmlSerializer.dll" />
+      <ComponentRef Id="System.Xml.XPath.dll" />
+      <ComponentRef Id="System.Xml.XPath.XDocument.dll" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>
