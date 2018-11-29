@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="ROM Explorer" Language="1033" Version="0.9.0.0" Manufacturer="Martin Gerczuk" UpgradeCode="c48ee12c-7e79-41e9-924c-db485166fb78">
+  <Product Id="*" Name="ROM Explorer" Language="1033" Version="0.9.1.0" Manufacturer="Martin Gerczuk" UpgradeCode="c48ee12c-7e79-41e9-924c-db485166fb78">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />

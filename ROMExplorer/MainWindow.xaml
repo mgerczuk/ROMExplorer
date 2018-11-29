@@ -49,19 +49,19 @@
                     <Grid x:Name="templateRoot" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
                         <Popup IsOpen="{Binding FileInfo.IsPopupOpen, Mode=TwoWay}" StaysOpen="False" Placement="Bottom"
                                Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <Themes:SystemDropShadowChrome Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                            <Border MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
                                 <TreeView ItemsSource="{Binding FileInfo.ArchiveEntries}">
                                     <i:Interaction.Behaviors>
-                                        <local:SelectedItemBehavior SelectedItem="{Binding FileInfo.SelectedArchiveEntry, Mode=TwoWay}"/>
+                                        <local:SelectedItemBehavior SelectedItem="{Binding FileInfo.SelectedArchiveEntry, Mode=TwoWay}" />
                                     </i:Interaction.Behaviors>
                                     <TreeView.ItemContainerStyle>
                                         <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                                            <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
-                                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                                            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                                         </Style>
                                     </TreeView.ItemContainerStyle>
                                 </TreeView>
-                            </Themes:SystemDropShadowChrome>
+                            </Border>
                         </Popup>
                     </Grid>
                     <ToggleButton x:Name="toggleButton" Grid.Row="1" Grid.Column="2"
